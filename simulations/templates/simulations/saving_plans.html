@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saving Plans</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 800px;
+            margin-top: 50px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2a9d8f;
+        }
+
+        h3 {
+            color: #2a9d8f;
+            margin-top: 30px;
+        }
+
+        .btn-primary {
+            background-color: #2a9d8f;
+            border-color: #2a9d8f;
+        }
+
+        .btn-primary:hover {
+            background-color: #21867a;
+            border-color: #21867a;
+        }
+
+        .result-section {
+            background-color: #f1f1f1;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+
+        .result-section p {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .result-section img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Saving Plans Calculator</h1>
+    <form method="post" class="mt-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Calculate</button>
+    </form>
+
+    {% if final_savings %}
+        <div class="result-section">
+            <h3>Results</h3>
+            <p><strong>Final Savings:</strong> ₹{{ final_savings|floatformat:2 }}</p>
+            <p><strong>Months Taken to Reach Target:</strong> {{ months_taken }}</p>
+
+            <h3>Saving Plan Chart</h3>
+            <img src="data:image/png;base64,{{ image_data }}" alt="Saving Plan Chart">
+        </div>
+    {% endif %}
+</div>
+
+</body>
+</html>

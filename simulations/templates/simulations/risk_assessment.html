@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Assessment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #2a9d8f;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #2a9d8f;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #21867a;
+        }
+
+        .result {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .result h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .result p {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        .result h3 {
+            text-align: center;
+            color: #2a9d8f;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Risk Assessment Form</h1>
+</header>
+
+<div class="container">
+    <form method="POST">
+        {% csrf_token %}
+        <h2>Enter Your Details</h2>
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if risk_assessment %}
+        <div class="result">
+            <h2>Risk Assessment Results</h2>
+            <p><strong>Age:</strong> {{ risk_assessment.age }}</p>
+            <p><strong>Income:</strong> ₹{{ risk_assessment.income }}</p>
+            <p><strong>Investment Experience:</strong> {{ risk_assessment.get_investment_experience_display }}</p>
+            <p><strong>Financial Goals:</strong> {{ risk_assessment.financial_goals }}</p>
+            <p><strong>Risk Tolerance:</strong> {{ risk_assessment.get_risk_tolerance_display }}</p>
+            <h3>Calculated Risk Score: {{ risk_assessment.risk_score }}</h3>
+        </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
