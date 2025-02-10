@@ -1,6 +1,6 @@
 # simulations/views.py
 from django.shortcuts import render, redirect
-from .forms import RetirementGoalForm,FinancialDataForm,ExpenseForm,RiskAssessmentForm,SavingPlanForm
+from .forms import RetirementGoalForm,FinancialDataForm,ExpenseForm,RiskAssessmentForm,SavingPlanForm,StockForm
 import matplotlib.pyplot as plt
 import numpy as np
 from io import BytesIO
@@ -13,6 +13,8 @@ import yfinance as yf
 import requests
 import openai
 from django.conf import settings 
+from .utils import get_stock_data
+
 def retirement_goal(request):
     chart_url = None
     future_value = None
@@ -141,58 +143,24 @@ stock_symbols = [
     'M&M.NS'           # Mahindra & Mahindra
 ]
 
-def get_stock_data():
-    # Download stock data for the symbols
-    data = yf.download(stock_symbols, period="1d", group_by='ticker', auto_adjust=True)
+def stock_view(request):
+    gainers, losers = [], []
     
-    if data.empty:
-        print("No data retrieved for the specified symbols.")
-        return [], []  # Return empty lists if no data is retrieved
+    # Check if the request method is POST and user has submitted symbols
+    if request.method == 'POST':
+        form = StockForm(request.POST)
+        if form.is_valid():
+            stock_symbols = form.cleaned_data['stock_symbols']  # Assume it's a comma-separated string of symbols
+            symbols_list = stock_symbols.split(',')
+            gainers, losers = get_stock_data(symbols_list)  # Fetch stock data
+    else:
+        form = StockForm()
 
-    print("Data Retrieved:")  # Debugging statement to check the fetched data
-    print(data)
-
-    stock_changes = []
-    for symbol in stock_symbols:
-        # Check if the data for each symbol is available
-        stock_data = data[symbol]
-        if stock_data.empty:
-            print(f"No data for {symbol}")
-            continue
-        
-        open_price = stock_data['Open'][0]
-        close_price = stock_data['Close'][0]
-        change_percent = ((close_price - open_price) / open_price) * 100
-        stock_changes.append((symbol, change_percent))
-
-    # Separate gainers and losers
-    gainers = [stock for stock in stock_changes if stock[1] > 0]
-    losers = [stock for stock in stock_changes if stock[1] < 0]
-
-    # Sort gainers and losers
-    gainers = sorted(gainers, key=lambda x: x[1], reverse=True)
-    losers = sorted(losers, key=lambda x: x[1])
-
-    return gainers, losers
-
-gainers, losers = get_stock_data()
-
-# Displaying the data
-print("Market Data\n")
-if gainers:
-    print("Top Gainers:")
-    for gainer in gainers:
-        print(f"{gainer[0]}: {gainer[1]:.2f}%")
-else:
-    print("No Gainers data available.\n")
-
-if losers:
-    print("\nTop Losers:")
-    for loser in losers:
-        print(f"{loser[0]}: {loser[1]:.2f}%")
-else:
-    print("No Losers data available.\n")
-
+    return render(request, 'stock_data.html', {
+        'form': form,
+        'gainers': gainers,
+        'losers': losers,
+    })
 # Generate a chart for market overview (Gainers vs Losers)
 def plot_market_overview(gainers, losers):
     labels = ['Top Gainers', 'Top Losers']
