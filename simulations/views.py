@@ -6,8 +6,11 @@ import numpy as np
 from io import BytesIO
 import base64
 import io
+import pandas as pd
 from .tax_calculation import tax_calculation
 from .models import FinancialDataForm,Expense,RiskAssessment
+import yfinance as yf
+import requests
 
 def retirement_goal(request):
     chart_url = None
@@ -97,10 +100,155 @@ def calculate_tax(income):
     return tax
 
 # Financial Dashboard View
+
+
+def get_stock_price(symbol="AAPL"):
+    """
+    Fetch the real-time stock price using yfinance (you can change the stock symbol here).
+    """
+    stock = yf.Ticker(symbol)
+    stock_data = stock.history(period="1d")
+    return stock_data['Close'].iloc[-1]
+
+def get_crypto_price(crypto_id="bitcoin"):
+    """
+    Fetch the real-time cryptocurrency price using CoinGecko API (default: Bitcoin).
+    """
+    url = f"https://api.coingecko.com/api/v3/simple/price?ids={crypto_id}&vs_currencies=inr"
+    response = requests.get(url)
+    data = response.json()
+    return data[crypto_id]['inr']
+
+
+
+# List of stock symbols (NSE stocks in this case)
+stock_symbols = [
+    'HINDUNILVR.NS',  # Hindustan Unilever
+    'RELIANCE.NS',     # Reliance Industries
+    'INFY.NS',         # Infosys
+    'LT.NS',           # Larsen & Toubro
+    'HDFCBANK.NS',     # HDFC Bank
+    'ICICIBANK.NS',    # ICICI Bank
+    'TCS.NS',          # Tata Consultancy Services
+    'SBIN.NS',         # State Bank of India
+    'BAJFINANCE.NS',   # Bajaj Finance
+    'ITC.NS',          # ITC Ltd.
+    'KOTAKBANK.NS',    # Kotak Mahindra Bank
+    'AXISBANK.NS',     # Axis Bank
+    'MARUTI.NS',       # Maruti Suzuki
+    'WIPRO.NS',        # Wipro
+    'M&M.NS'           # Mahindra & Mahindra
+]
+
+def get_stock_data():
+    # Download stock data for the symbols
+    data = yf.download(stock_symbols, period="1d", group_by='ticker', auto_adjust=True)
+    
+    if data.empty:
+        print("No data retrieved for the specified symbols.")
+        return [], []  # Return empty lists if no data is retrieved
+
+    print("Data Retrieved:")  # Debugging statement to check the fetched data
+    print(data)
+
+    stock_changes = []
+    for symbol in stock_symbols:
+        # Check if the data for each symbol is available
+        stock_data = data[symbol]
+        if stock_data.empty:
+            print(f"No data for {symbol}")
+            continue
+        
+        open_price = stock_data['Open'][0]
+        close_price = stock_data['Close'][0]
+        change_percent = ((close_price - open_price) / open_price) * 100
+        stock_changes.append((symbol, change_percent))
+
+    # Separate gainers and losers
+    gainers = [stock for stock in stock_changes if stock[1] > 0]
+    losers = [stock for stock in stock_changes if stock[1] < 0]
+
+    # Sort gainers and losers
+    gainers = sorted(gainers, key=lambda x: x[1], reverse=True)
+    losers = sorted(losers, key=lambda x: x[1])
+
+    return gainers, losers
+
+gainers, losers = get_stock_data()
+
+# Displaying the data
+print("Market Data\n")
+if gainers:
+    print("Top Gainers:")
+    for gainer in gainers:
+        print(f"{gainer[0]}: {gainer[1]:.2f}%")
+else:
+    print("No Gainers data available.\n")
+
+if losers:
+    print("\nTop Losers:")
+    for loser in losers:
+        print(f"{loser[0]}: {loser[1]:.2f}%")
+else:
+    print("No Losers data available.\n")
+
+# Generate a chart for market overview (Gainers vs Losers)
+def plot_market_overview(gainers, losers):
+    labels = ['Top Gainers', 'Top Losers']
+    sizes = [len(gainers), len(losers)]
+    
+    fig, ax = plt.subplots(figsize=(6, 6))
+    ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
+    ax.axis('equal')
+    
+    buf = io.BytesIO()
+    plt.savefig(buf, format="png")
+    buf.seek(0)
+    image_data = base64.b64encode(buf.read()).decode('utf-8')
+    buf.close()
+    
+    return image_data
+
+
+def market_data(request):
+    # Fetching the data for top gainers and losers
+    try:
+        # Get top gainers and losers from NSE (India) using Yahoo Finance
+        nse_top_gainers = yf.download('^NSEBANK', period='1d')  # Sample for Nifty Bank, you can adjust
+        nse_top_losers = yf.download('^NSEAUTO', period='1d')   # Sample for Nifty Auto, adjust as necessary
+        
+        # Ensure that the data has been returned
+        if not nse_top_gainers.empty and not nse_top_losers.empty:
+            # Convert data to DataFrame
+            gainers_data = pd.DataFrame(nse_top_gainers)
+            losers_data = pd.DataFrame(nse_top_losers)
+        else:
+            # Handle the case where data was not found or fetched
+            gainers_data = None
+            losers_data = None
+    except Exception as e:
+        gainers_data = None
+        losers_data = None
+        error_message = str(e)
+
+    # Render the template with the data
+    return render(
+        request,
+        "simulations/market_data.html",
+        {
+            "gainers_data": gainers_data,
+            "losers_data": losers_data,
+            "error_message": error_message if 'error_message' in locals() else None,
+        },
+    )
+
+
 def financial_dashboard(request):
     tax = 0
     financial_data = None
     image_data = None
+    stock_price = None
+    crypto_price = None
 
     if request.method == "POST":
         form = FinancialDataForm(request.POST)
@@ -153,6 +301,10 @@ def financial_dashboard(request):
             image_data = base64.b64encode(buf.read()).decode("utf-8")
             buf.close()
 
+            # Fetch real-time stock and crypto prices
+            stock_price = get_stock_price("AAPL")  # Example for Apple stock
+            crypto_price = get_crypto_price("bitcoin")  # Example for Bitcoin
+
     else:
         form = FinancialDataForm()
 
@@ -164,9 +316,10 @@ def financial_dashboard(request):
             "tax": tax,
             "financial_data": financial_data,
             "image_data": image_data,
+            "stock_price": stock_price,
+            "crypto_price": crypto_price,
         },
     )
-
 
 
 
@@ -331,3 +484,4 @@ def risk_assessment(request):
         form = RiskAssessmentForm()
     
     return render(request, 'simulations/risk_assessment.html', {'form': form, 'risk_assessment': risk_assessment})
+

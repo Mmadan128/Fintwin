@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Data</title>
+</head>
+<body>
+    <h1>Market Data</h1>
+
+    {% if error_message %}
+        <p>Error: {{ error_message }}</p>
+    {% endif %}
+
+    <h2>Top Gainers</h2>
+    <ul>
+        {% for stock, change in gainers %}
+            <li>{{ stock }}: {{ change }}%</li>
+        {% empty %}
+            <li>No Gainers data available.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Top Losers</h2>
+    <ul>
+        {% for stock, change in losers %}
+            <li>{{ stock }}: {{ change }}%</li>
+        {% empty %}
+            <li>No Losers data available.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Market Overview (Gainers vs Losers)</h2>
+    <img src="data:image/png;base64,{{ image_data }}" alt="Market Overview Chart">
+</body>
+</html>
