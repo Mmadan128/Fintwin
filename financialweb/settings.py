@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-(w)l2+mvr$fg5vcmq5=^g2keakhqfx^k2f((+)q@yy7x!q3up+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['financialtwin.pythonanywhere.com']
+ALLOWED_HOSTS = ['fintwin.onrender.com']
 
 
 # Application definition
