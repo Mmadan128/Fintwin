@@ -1,3 +1,4 @@
+import os
 import requests
 from django.shortcuts import render
 
@@ -5,7 +6,7 @@ def get_finance_news(request):
     url = "https://newsapi.org/v2/top-headlines"
     params = {
         'category': 'business',
-        'apiKey': 'fa2b8cdd4830452d83db26f7d5472a5b',
+        'apiKey': os.getenv('NEWS_API_KEY'),  
         'language': 'en'
     }
     response = requests.get(url, params=params)

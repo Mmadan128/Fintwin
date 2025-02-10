@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-(w)l2+mvr$fg5vcmq5=^g2keakhqfx^k2f((+)q@yy7x!q3up+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['fintwin.onrender.com']
+ALLOWED_HOSTS = ['fintwin.onrender.com','127.0.0.1']
 
 
 # Application definition
@@ -132,4 +132,5 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-OPENAI_API_KEY = "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"
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+NEWS_API_KEY = os.getenv('NEWS_API_KEY')
