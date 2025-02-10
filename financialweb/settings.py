@@ -131,3 +131,5 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+OPENAI_API_KEY = "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"

@@ -11,7 +11,8 @@ from .tax_calculation import tax_calculation
 from .models import FinancialDataForm,Expense,RiskAssessment
 import yfinance as yf
 import requests
-
+import openai
+from django.conf import settings 
 def retirement_goal(request):
     chart_url = None
     future_value = None
@@ -485,3 +486,34 @@ def risk_assessment(request):
     
     return render(request, 'simulations/risk_assessment.html', {'form': form, 'risk_assessment': risk_assessment})
 
+openai.api_key = settings.OPENAI_API_KEY
+
+def get_financegpt_response(prompt):
+    try:
+        response = openai.Completion.create(
+            model="gpt-4",
+            prompt=prompt,
+            temperature=0.7,
+            max_tokens=150,
+            n=1,
+            stop=None,
+        )
+        return response.choices[0].text.strip()
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+def financegpt_view(request):
+    gpt_response = None
+
+    if request.method == "POST":
+        gpt_prompt = request.POST.get('gpt_prompt', '').strip()
+        if gpt_prompt:
+            gpt_response = get_financegpt_response(gpt_prompt)
+
+    return render(
+        request,
+        "simulations/financegpt.html", 
+        {
+            "gpt_response": gpt_response,  # Pass the GPT response to the template
+        }
+    )
