@@ -9,5 +9,5 @@ urlpatterns = [
     path('expense_tracker/', views.expense_tracker, name='expense_tracker'),
     path('risk_assessment/', views.risk_assessment, name='risk_assessment'),
    path('market_data/', views.market_data, name='market_data'),
-    path('financegpt/', views.financegpt_view, name='financegpt'),
+    path('financegpt/', views.financegpt_view, name='financegpt_view'),
 ]
