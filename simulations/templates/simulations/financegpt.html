@@ -41,17 +41,7 @@
           </div>
           <div class="left-container">
             <div class="card1">
-              <h2>Ask FINGPT a Question</h2>
-              <form method="POST" action="{% url 'financegpt_view' %}">
-                {% csrf_token %}
-                <textarea
-                    id="gpt_prompt"
-                    name="gpt_prompt"
-                    rows="4"
-                    cols="50"
-                    placeholder="Ask about stock markets, investment strategies, etc."
-                ></textarea>
-                <button type="submit" class="button">Ask FINGPT</button>
+                <h2>Ask FINGPT a Question</h2>
                 <form method="POST" action="{% url 'financegpt_view' %}">
                     {% csrf_token %}
                     <textarea
@@ -63,28 +53,18 @@
                     ></textarea>
                     <button type="submit" class="button">Ask FINGPT</button>
                 </form>
-                
-                {% if gpt_response %}
-                    <div class="response">
-                        <h2>FINGPT Response:</h2>
-                        <p>{{ gpt_response }}</p>
-                    </div>
-                {% endif %}
             </div>
+        
             <div class="card2">
-              <h2>FINGPT Response:</h2>
-              <div id="response" class="response">
-                {% if gpt_response %}
-                  {{ gpt_response }}
-                {% else %}
-                  "Please enter a question above."
-                {% endif %}
-              </div>
+                <h2>FINGPT Response:</h2>
+                <div class="response">
+                    {% if gpt_response %}
+                        <p>{{ gpt_response }}</p>
+                    {% else %}
+                        <p>Please enter a question above.</p>
+                    {% endif %}
+                </div>
             </div>
-          </div>
-        </div>
-        <div class="extras">
-          <h2>Some most frequent asked questions</h2>
         </div>
         <details>
           <summary>
