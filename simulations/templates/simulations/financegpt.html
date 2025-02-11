@@ -5,245 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FinanceGPT</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css" integrity="sha512-kJlvECunwXftkPwyvHbclArO8wszgBGisiLeuDFwNM8ws+wKIw0sv1os3ClWZOcrEB2eRXULYUsm8OVRGJKwGA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
-    <!-- Inline CSS starts here -->
-    <style>
-      * {
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-      }
-      html, body {
-        height: 100%;
-        width: 100%;
-        font-family: sans-serif;
-      }
-      .main {
-        width: 100%;
-        position: relative;
-        color: white;
-        background-color: black;
-        z-index: -1;
-      }
-      .fingpt {
-        position: absolute;
-        object-fit: cover;
-        width: 100%;
-        height: 132vw;
-        filter: blur(5px);
-        filter: grayscale(40%);
-        filter: brightness(40%);
-        z-index: -1;
-      }
-      .nav {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0vw 2vw;
-        position: sticky;
-        top: 0%;
-        left: 0%;
-        backdrop-filter: blur(10px);
-        z-index: 999 !important;
-      }
-      .nav h1 {
-        font-size: 2vw;
-        text-transform: uppercase;
-      }
-      .head {
-        display: flex;
-        align-items: center;
-        gap: 2vw;
-      }
-      .head img {
-        width: 6vw;
-        height: 6vw;
-      }
-      .nav a {
-        text-decoration: none;
-        color: white;
-        font-size: 1.3vw;
-        text-transform: uppercase;
-      }
-      .menu {
-        display: flex;
-        gap: 3vw;
-      }
-      .heading {
-        text-transform: uppercase;
-        margin-top: 3vw;
-        text-align: center;
-      }
-      .heading h1 {
-        overflow: hidden;
-        text-wrap: nowrap;
-        font-size: 5vw;
-        line-height: 6vw;
-        font-weight: 900;
-        color: transparent;
-        -webkit-text-stroke: 4px white;
-        font-style: italic;
-      }
-      .main-cont {
-        width: 100%;
-        height: 100vh;
-        display: grid;
-        grid-template-columns: 50% 50%;
-        padding: 2vw;
-        margin-top: 7vw;
-      }
-      .right-container {
-        width: 40vw;
-        height: 40vw;
-        position: relative;
-      }
-      .right-container h1 {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 8.5ch;
-        transform: translate(-50%, -50%);
-        font-size: 7vw;
-        text-wrap: nowrap;
-        overflow: hidden;
-        animation: typing 2s steps(20) infinite alternate-reverse;
-      }
-      @keyframes typing {
-        from {
-          width: 0;
-        }
-      }
-      :root {
-        --size: 55vw;
-        --s: calc(var(--size) / 6);
-        --bor: calc(var(--size) / 30);
-        --boxShadow: calc(var(--size) / 12);
-      }
-      .circle {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        width: var(--size);
-        height: var(--size);
-        filter: url(#wavy) blur(1px);
-      }
-      .circle:before,
-      .circle:after {
-        content: "";
-        position: absolute;
-        top: var(--s);
-        left: var(--s);
-        right: var(--s);
-        bottom: var(--s);
-        border-radius: 50%;
-        border: var(--bor) solid #fff;
-      }
-      .circle:before {
-        box-shadow: 0 0 var(--boxShadow) #0f0, inset 0 0 var(--boxShadow) #0f0;
-        -webkit-box-reflect: below 10px linear-gradient(transparent, transparent, #0002);
-        animation: move 5s linear infinite;
-      }
-      .circle:after {
-        box-shadow: 0 0 calc(var(--bor) / 2) #fff, inset 0 0 var(--bor) #fff;
-      }
-      @keyframes move {
-        0% {
-          box-shadow: 0 0 var(--boxShadow) #0f0, inset 0 0 var(--boxShadow) #0f0;
-          filter: hue-rotate(0deg);
-        }
-        20% {
-          box-shadow: 0 0 60px #0f0, inset 0 0 60px #0f0;
-        }
-        40% {
-          box-shadow: 0 0 40px #0f0, inset 0 0 40px #0f0;
-        }
-        60% {
-          box-shadow: 0 0 80px #0f0, inset 0 0 80px #0f0;
-        }
-        80% {
-          box-shadow: 0 0 100px #0f0, inset 0 0 100px #0f0;
-        }
-        100% {
-          box-shadow: 0 0 var(--boxShadow) #0f0, inset 0 0 var(--boxShadow) #0f0;
-          filter: hue-rotate(360deg);
-        }
-      }
-      svg {
-        width: 0;
-        height: 0;
-      }
-      .left-container {
-        background-color: rgba(0, 0, 0, 0.8);
-        width: 47vw;
-        height: 45vw;
-        border-radius: 50px;
-        padding: 2vw 4vw;
-        border: 1px solid white;
-        box-shadow: 0px 0px 5px 1px white;
-      }
-      .card1 h2 {
-        text-align: center;
-        text-transform: uppercase;
-        font-weight: 100;
-        font-size: 2vw;
-      }
-      form {
-        display: flex;
-        flex-direction: column;
-      }
-      textarea {
-        background-color: black;
-        color: white;
-        padding: 1vw;
-        margin-top: 3vw;
-        width: 40vw;
-        border-radius: 10px;
-        font-size: 1.1vw;
-      }
-      .button {
-        margin: 3vw 0;
-        width: 12vw;
-        height: 3.5vw;
-        border-radius: 20px;
-        align-self: center;
-        font-size: 1.2vw;
-      }
-      .card2 h2 {
-        text-align: center;
-        text-transform: uppercase;
-        font-weight: 100;
-        font-size: 2vw;
-      }
-      .response {
-        width: 39vw;
-        background-color: rgb(0, 0, 0, 0.7);
-        height: 15vw;
-        margin-top: 1vw;
-        border: 1px solid white;
-        border-radius: 20px;
-        overflow: hidden;
-        overflow-y: scroll;
-        padding: 1vw 1vw;
-        font-size: 1.1vw;
-        line-height: 1.5vw;
-      }
-      .response::-webkit-scrollbar {
-        display: none;
-      }
-      .footer {
-        display: flex;
-        align-items: center;
-        padding: 2vw;
-        color: white;
-        font-size: 1.2vw;
-        justify-content: center;
-        margin-top: 2vw;
-      }
-    </style>
-    <!-- Inline CSS ends here -->
+    <link rel="stylesheet" href="fingpt.css" />
   </head>
-
   <body>
     <div class="main">
       <div class="page1">
@@ -265,84 +28,54 @@
         </div>
         <div class="main-cont">
           <div class="right-container">
-            <h1>FINGPT...</h1>
-            <div class="circle"></div>
-            <svg>
-              <filter id="wavy">
-                <feTurbulence x="0" y="0" baseFrequency="0.009" numOctaves="5" speed="2">
-                  <animate attributeName="baseFrequency" dur="60s" values="0.02; 0.005; 0.02" repeatCount="indefinite"></animate>
-                </feTurbulence>
-                <feDisplacementMap in="SourceGraphic" scale="30"></feDisplacementMap>
-              </filter>
-            </svg>
+              <h1>FINGPT...</h1>
+              <div class="circle"></div>
+              <svg>
+                  <filter id="wavy">
+                    <feTurbulence x="0" y="0" baseFrequency="0.009" numOctaves="5" speed="2">
+                      <animate attributeName="baseFrequency" dur="60s" values="0.02; 0.005; 0.02" repeatCount="indefinite">
+                    </feTurbulence>
+                    <feDisplacementMap in="SourceGraphic" scale="30" >
+                  </filter>
+              </svg>
           </div>
           <div class="left-container">
             <div class="card1">
-              <h2>Ask FINGPT a Question</h2>
-              <form method="POST" action="{% url 'financegpt_view' %}">
-                {% csrf_token %}
-                <textarea
-                  id="gpt_prompt"
-                  name="gpt_prompt"
-                  rows="4"
-                  cols="50"
-                  placeholder="Ask about stock markets, investment strategies, etc."
-                ></textarea>
-                <button type="submit" class="button">Ask FINGPT</button>
-              </form>
+                <h2>Ask FINGPT a Question</h2>
+                <form method="POST" action="{% url 'financegpt_view' %}">
+                    {% csrf_token %}
+                    <textarea
+                        id="gpt_prompt"
+                        name="gpt_prompt"
+                        rows="4"
+                        cols="50"
+                        placeholder="Ask about stock markets, investment strategies, etc."
+                    ></textarea>
+                    <button type="submit" class="button">Ask FINGPT</button>
+                </form>
             </div>
-
+        
             <div class="card2">
-              <h2>FINGPT Response:</h2>
-              <div class="response">
-                {% if gpt_response %}
-                  <p>{{ gpt_response }}</p>
-                {% else %}
-                  <p>Please enter a question above.</p>
-                {% endif %}
-              </div>
+                <h2>FINGPT Response:</h2>
+                <div class="response">
+                    {% if gpt_response %}
+                        <p>{{ gpt_response }}</p>
+                    {% else %}
+                        <p>Please enter a question above.</p>
+                    {% endif %}
+                </div>
             </div>
-          </div>
         </div>
         <details>
           <summary>
-            <h2>1. What is the role of the insurance sector in India?</h2>
-            <i class="ri-arrow-right-down-line"></i>
+              <h2>1. What is the role of the insurance sector in India?</h2>
+              <i class="ri-arrow-right-down-line" ></i>
           </summary>
           <p>The insurance sector in India provides risk management solutions for individuals and businesses through life insurance, health insurance, and general insurance policies, helping to mitigate financial risks in case of unexpected events.</p>
         </details>
-        <h3 class="footer">&copy; All Rights Reserved by Financial Twin</h3>
+        <h3 class="footer">&copy;All Rights Reserved by Financial Twin</h3>
       </div>
-      
-      <!-- Inline JS starts here -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-      let pg1= document.querySelector(".page1")
-gsap.from(pg1, {
-    y:1000,
-    opacity:0,
-    duration:1.2,
-})
-gsap.from(".heading h1, .menu",{
-    duration:1,
-    y:100,
-    opacity:0,
-    stagger:0.5,
-    delay:0.8
-})
-gsap.from(".right-container",{
-    duration:1,
-    x:-500,
-    opacity:0,
-    delay:1
-})
-gsap.from(".left-container",{
-    duration:1,
-    x:500,
-    opacity:0,
-    delay:1
-})
-
-      <script src="fingpt.js"></script>
-      <!-- Inline JS ends here -->
-    </body>
+    <script src="fingpt.js"></script>
+  </body>
 </html>
