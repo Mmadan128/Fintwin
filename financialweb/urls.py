@@ -6,5 +6,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('newswidget/', include('newswidget.urls')), 
     path('simulations/', include('simulations.urls')), # Include the URLs from your app
-    path('mainpage/', views.mainpage, name='mainpage'),
+    path('', views.mainpage, name='mainpage'),
 ]
