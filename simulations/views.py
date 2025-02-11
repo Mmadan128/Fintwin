@@ -14,6 +14,7 @@ import requests
 import openai
 from django.conf import settings 
 from .utils import get_stock_data
+from django.http import JsonResponse
 
 def retirement_goal(request):
     chart_url = None
@@ -475,19 +476,9 @@ def get_financegpt_response(prompt):
         return f"Error: {str(e)}"
 
 
-
 def financegpt_view(request):
-    gpt_response = None
-
     if request.method == "POST":
-        gpt_prompt = request.POST.get('gpt_prompt', '').strip()
+        gpt_prompt = request.POST.get("gpt_prompt", "").strip()
         if gpt_prompt:
-            gpt_response = get_financegpt_response(gpt_prompt)
-
-    return render(
-        request,
-        "simulations/financegpt.html", 
-        {
-            "gpt_response": gpt_response,  # Pass the GPT response to the template
-        }
-    )
+            response = get_financegpt_response(gpt_prompt)
+            return JsonResponse({"response": response})

@@ -1,79 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FinanceGPT</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7fc;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px;
-            text-align: center;
-        }
-        .container {
-            width: 80%;
-            margin: 20px auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        h1, h2 {
-            color: #333;
-        }
-        .card {
-            background-color: #ffffff;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin: 10px 0;
-        }
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 18px;
-        }
-        .button:hover {
-            background-color: #45a049;
-        }
-    </style>
-</head>
-<body>
+<form id="financegpt-form">
+    <textarea
+        id="gpt_prompt"
+        name="gpt_prompt"
+        rows="4"
+        cols="50"
+        placeholder="Ask about stock markets, investment strategies, etc."
+    ></textarea>
+    <button type="submit" class="button">Ask FINGPT</button>
+</form>
 
-<header>
-    <h1>Ask FinanceGPT</h1>
-</header>
-
-<div class="container">
-    <div class="card">
-        <h2>Ask FinanceGPT a Question</h2>
-        <form method="POST">
-            {% csrf_token %}
-            <label for="gpt_prompt">Enter your question:</label>
-            <textarea id="gpt_prompt" name="gpt_prompt" rows="4" cols="50" placeholder="Ask about stock markets, investment strategies, etc."></textarea>
-            <button type="submit" class="button">Ask FinanceGPT</button>
-        </form>
-    </div>
-
-    {% if gpt_response %}
-    <div class="card">
-        <h2>FinanceGPT Response:</h2>
-        <p>{{ gpt_response }}</p>
-    </div>
-    {% endif %}
+<div class="card2">
+    <h2>FINGPT Response:</h2>
+    <div class="response" id="response-box">Waiting for response...</div>
 </div>
 
-</body>
-</html>
+<script>
+    document.getElementById("financegpt-form").addEventListener("submit", function(event) {
+        event.preventDefault();  // Prevent form from reloading the page
+
+        let prompt = document.getElementById("gpt_prompt").value;
+        let responseBox = document.getElementById("response-box");
+
+        responseBox.innerHTML = "Generating response..."; // Show loading message
+
+        fetch("{% url 'financegpt_view' %}", {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}",
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: "gpt_prompt=" + encodeURIComponent(prompt),
+        })
+        .then(response => response.json())
+        .then(data => {
+            responseBox.innerHTML = data.response;  // Show GPT response
+        })
+        .catch(error => {
+            responseBox.innerHTML = "Error getting response!";
+        });
+    });
+</script>
