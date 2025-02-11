@@ -47,9 +47,11 @@
                     <div class="card1">
                         <h2>Ask FINGPT a Question</h2>
                         <form id="financegpt-form">
+                            {% csrf_token %}
                             <textarea id="gpt_prompt" name="gpt_prompt" rows="4" cols="50" placeholder="Ask about stock markets, investment strategies, etc."></textarea>
                             <button type="submit" class="button">Ask FINGPT</button>
                         </form>
+                        
                     </div>
                     
                     <div class="card2">
@@ -98,14 +100,16 @@
     
             responseBox.innerHTML = "Generating response...";  // Show loading text
     
+            const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;  // Get CSRF token
+    
             try {
                 const response = await fetch("{% url 'financegpt_view' %}", {
                     method: "POST",
                     headers: {
-                        "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value,
+                        "X-CSRFToken": csrfToken,
                         "Content-Type": "application/x-www-form-urlencoded",
                     },
-                    body: new URLSearchParams({ "gpt_prompt": prompt }),  // Correct data format
+                    body: new URLSearchParams({ "gpt_prompt": prompt }),
                 });
     
                 const data = await response.json();
