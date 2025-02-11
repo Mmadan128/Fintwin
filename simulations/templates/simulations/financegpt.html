@@ -4,76 +4,119 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FinanceGPT</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7fc;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px;
-            text-align: center;
-        }
-        .container {
-            width: 80%;
-            margin: 20px auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        h1, h2 {
-            color: #333;
-        }
-        .card {
-            background-color: #ffffff;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin: 10px 0;
-        }
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 18px;
-        }
-        .button:hover {
-            background-color: #45a049;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css" integrity="sha512-kJlvECunwXftkPwyvHbclArO8wszgBGisiLeuDFwNM8ws+wKIw0sv1os3ClWZOcrEB2eRXULYUsm8OVRGJKwGA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="fingpt.css">
 </head>
 <body>
+    <div class="main">
+        <div class="page1">
+            <img src="./assets/fingpt.jpg" alt="FinanceGPT" class="fingpt">
+            <div class="nav">
+                <div class="head">
+                    <img src="./assets/pixsdd-removebg-preview.png" alt="Logo">
+                    <h1>Finance Twin</h1>
+                </div>
+                <div class="menu">
+                    <a href="#">Home</a>
+                    <a href="#">Features</a>
+                    <a href="#">About</a>
+                    <a href="#">Contact</a>
+                </div>
+            </div>
 
-<header>
-    <h1>Ask FinanceGPT</h1>
-</header>
+            <div class="heading">
+                <h1>Explore Our New AI-powered<br>Financial GPT Model (FGM)</h1>
+            </div>
 
-<div class="container">
-    <div class="card">
-        <h2>Ask FinanceGPT a Question</h2>
-        <form method="POST">
-            {% csrf_token %}
-            <label for="gpt_prompt">Enter your question:</label>
-            <textarea id="gpt_prompt" name="gpt_prompt" rows="4" cols="50" placeholder="Ask about stock markets, investment strategies, etc."></textarea>
-            <button type="submit" class="button">Ask FinanceGPT</button>
-        </form>
+            <div class="main-cont">
+                <div class="right-container">
+                    <h1>FINGPT...</h1>
+                    <div class="circle"></div>
+                    <svg>
+                        <filter id="wavy">
+                            <feTurbulence x="0" y="0" baseFrequency="0.009" numOctaves="5" speed="2">
+                                <animate attributeName="baseFrequency" dur="60s" values="0.02; 0.005; 0.02" repeatCount="indefinite"></animate>
+                            </feTurbulence>
+                            <feDisplacementMap in="SourceGraphic" scale="30"></feDisplacementMap>
+                        </filter>
+                    </svg>
+                </div>
+
+                <!-- Left Container with Form and Response -->
+                <div class="left-container">
+                    <div class="card1">
+                        <h2>Ask FINGPT a Question</h2>
+                        <form id="financegpt-form">
+                            <textarea id="gpt_prompt" name="gpt_prompt" rows="4" cols="50" placeholder="Ask about stock markets, investment strategies, etc."></textarea>
+                            <button type="submit" class="button">Ask FINGPT</button>
+                        </form>
+                    </div>
+                    
+                    <div class="card2">
+                        <h2>FINGPT Response:</h2>
+                        <div class="response" id="response-box">Waiting for response...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="extras">
+                <h2>Some Frequently Asked Questions</h2>
+            </div>
+
+            <details>
+                <summary>
+                    <h2>1. What is the role of the insurance sector in India?</h2>
+                    <i class="ri-arrow-right-down-line"></i>
+                </summary>
+                <p>The insurance sector in India provides risk management solutions for individuals and businesses through life insurance, health insurance, and general insurance policies, helping to mitigate financial risks in case of unexpected events.</p>
+            </details>
+
+            <details>
+                <summary>
+                    <h2>2. What is Financial Planning and why is it important?</h2>
+                    <i class="ri-arrow-right-down-line"></i>
+                </summary>
+                <p>Financial planning involves setting goals for your financial future and creating a strategy to achieve them. It helps in budgeting, saving, investing, and managing risks, ensuring long-term financial stability.</p>
+            </details>
+
+            <h3 class="footer">&copy; All Rights Reserved by Financial Twin</h3>
+        </div>
     </div>
 
-    {% if gpt_response %}
-    <div class="card">
-        <h2>FinanceGPT Response:</h2>
-        <p>{{ gpt_response }}</p>
-    </div>
-    {% endif %}
-</div>
+    <!-- JavaScript to Handle GPT Query -->
+    <script>
+        document.getElementById("financegpt-form").addEventListener("submit", function(event) {
+            event.preventDefault();  // Prevent form reload
 
+            let prompt = document.getElementById("gpt_prompt").value;
+            let responseBox = document.getElementById("response-box");
+
+            if (prompt.trim() === "") {
+                responseBox.innerHTML = "Please enter a question!";
+                return;
+            }
+
+            responseBox.innerHTML = "Generating response...";  // Show loading text
+
+            fetch("{% url 'financegpt_view' %}", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}",
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: "gpt_prompt=" + encodeURIComponent(prompt),
+            })
+            .then(response => response.json())
+            .then(data => {
+                responseBox.innerHTML = data.response;  // Display GPT response
+            })
+            .catch(error => {
+                responseBox.innerHTML = "Error getting response!";
+            });
+        });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="fingpt.js"></script>
 </body>
 </html>
