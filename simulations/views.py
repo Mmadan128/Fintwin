@@ -480,5 +480,8 @@ def financegpt_view(request):
     if request.method == "POST":
         gpt_prompt = request.POST.get("gpt_prompt", "").strip()
         if gpt_prompt:
-            response = get_financegpt_response(gpt_prompt)
-            return JsonResponse({"response": response})
+            gpt_response = get_financegpt_response(gpt_prompt)
+            return JsonResponse({"gpt_response": gpt_response})  # Return JSON response
+    
+    # If it's not a POST request, render the HTML page
+    return render(request, "simulations/financegpt.html", {"gpt_response": None})
