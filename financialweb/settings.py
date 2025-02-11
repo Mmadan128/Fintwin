@@ -123,7 +123,7 @@ import os
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'simulations', 'static')  # Add this line
+     os.path.join(BASE_DIR, 'simulations/static'),
 ]
 
 
