@@ -85,52 +85,43 @@
 
     <!-- JavaScript to Handle GPT Query -->
     <script>
-        document.getElementById("financegpt-form").addEventListener("submit", function(event) {
+        document.getElementById("financegpt-form").addEventListener("submit", async function(event) {
             event.preventDefault();  // Prevent form reload
-
-            let prompt = document.getElementById("gpt_prompt").value;
+    
+            let prompt = document.getElementById("gpt_prompt").value.trim();
             let responseBox = document.getElementById("response-box");
-
-            if (prompt.trim() === "") {
+    
+            if (prompt === "") {
                 responseBox.innerHTML = "Please enter a question!";
                 return;
             }
-
+    
             responseBox.innerHTML = "Generating response...";  // Show loading text
-
-            fetch("/simulations/financegpt/", {  // Ensure this matches your Django URL
-                method: "POST",
-                headers: {
-                    "X-CSRFToken": getCookie("csrftoken"),
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                body: "gpt_prompt=" + encodeURIComponent(prompt),
-            })
-            .then(response => response.json())
-            .then(data => {
-                responseBox.innerHTML = data.response;  // Display GPT response
-            })
-            .catch(error => {
-                responseBox.innerHTML = "Error getting response!";
-            });
-        });
-
-        // Function to get CSRF token for Django
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    if (cookie.startsWith(name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
+    
+            try {
+                const response = await fetch("{% url 'financegpt_view' %}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value,
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body: new URLSearchParams({ "gpt_prompt": prompt }),  // Correct data format
+                });
+    
+                const data = await response.json();
+    
+                if (data.response) {
+                    responseBox.innerHTML = data.response;  // Display AI response
+                } else {
+                    responseBox.innerHTML = "Unexpected error. Try again.";
                 }
+            } catch (error) {
+                console.error("Error:", error);
+                responseBox.innerHTML = "Error getting response!";
             }
-            return cookieValue;
-        }
+        });
     </script>
+    
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="fingpt.js"></script>
