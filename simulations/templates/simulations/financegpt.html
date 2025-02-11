@@ -45,14 +45,26 @@
               <form method="POST" action="{% url 'financegpt_view' %}">
                 {% csrf_token %}
                 <textarea
-                  id="gpt_prompt"
-                  name="gpt_prompt"
-                  rows="4"
-                  cols="50"
-                  placeholder="Ask about stock markets, investment strategies, etc."
+                    id="gpt_prompt"
+                    name="gpt_prompt"
+                    rows="4"
+                    cols="50"
+                    placeholder="Ask about stock markets, investment strategies, etc."
                 ></textarea>
                 <button type="submit" class="button">Ask FINGPT</button>
-              </form>
+            </form>
+            
+            {% if gpt_response %}
+                <div class="response">
+                    <h2>FINGPT Response:</h2>
+                    <p>{{ gpt_response }}</p>
+                </div>
+            {% else %}
+                <div class="response">
+                    <h2>FINGPT Response:</h2>
+                    <p>No response yet. Ask a question!</p>
+                </div>
+            {% endif %}
             </div>
             <div class="card2">
               <h2>FINGPT Response:</h2>
