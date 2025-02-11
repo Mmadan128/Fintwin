@@ -477,16 +477,18 @@ def get_financegpt_response(prompt):
 
 
 def financegpt_view(request):
-    gpt_response = None
+    gpt_response = None  # Initialize as None
 
     if request.method == "POST":
         gpt_prompt = request.POST.get('gpt_prompt', '').strip()
         if gpt_prompt:
             gpt_response = get_financegpt_response(gpt_prompt)
+        else:
+            gpt_response = "Please enter a question to get a response."
 
     return render(
         request,
-        "simulations/financegpt.html",  # Make sure this template is correct
+        "simulations/financegpt.html",  # Make sure this is the correct template
         {
             "gpt_response": gpt_response,  # Pass the GPT response to the template
         }
