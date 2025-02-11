@@ -477,18 +477,18 @@ def get_financegpt_response(prompt):
 
 
 def financegpt_view(request):
-    gpt_response = None  # Initialize as None
+    gpt_response = None  # Initialize as None by default
 
     if request.method == "POST":
         gpt_prompt = request.POST.get('gpt_prompt', '').strip()
         if gpt_prompt:
             gpt_response = get_financegpt_response(gpt_prompt)
         else:
-            gpt_response = "Please enter a question to get a response."
+            gpt_response = "Please enter a question above."  # Only set when the form is submitted but empty
 
     return render(
         request,
-        "simulations/financegpt.html",  # Make sure this is the correct template
+        "simulations/financegpt.html",  # Your template file
         {
             "gpt_response": gpt_response,  # Pass the GPT response to the template
         }
