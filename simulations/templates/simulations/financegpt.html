@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -5,15 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FinanceGPT</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css" integrity="sha512-kJlvECunwXftkPwyvHbclArO8wszgBGisiLeuDFwNM8ws+wKIw0sv1os3ClWZOcrEB2eRXULYUsm8OVRGJKwGA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="fingpt.css" />
-  </head>
+    <link rel="stylesheet" href="{% static 'simulations/css/fingpt.css' %}" />
+</head>
   <body>
     <div class="main">
       <div class="page1">
-        <img src="./assets/fingpt.jpg" alt="" class="fingpt" />
+        <img src="{% static 'simulations/images/fingpt.jpg' %}" alt="Finance GPT Image" />
         <div class="nav">
           <div class="head">
-            <img src="./assets/pixsdd-removebg-preview.png" />
+            <img src="{% static 'simulations/images/fintwin.png' %}" alt="Finance GPT Image" />
             <h1>Finance Twin</h1>
           </div>
           <div class="menu">
@@ -76,6 +77,6 @@
         <h3 class="footer">&copy;All Rights Reserved by Financial Twin</h3>
       </div>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="fingpt.js"></script>
+      <script src="{% static 'simulations/js/fingpt.js' %}"></script>
   </body>
 </html>
