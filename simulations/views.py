@@ -514,7 +514,7 @@ def get_financegpt_response(prompt):
                 {"role": "user", "content": prompt},
             ],
             temperature=0.7,
-            max_tokens=500,  # Increased max_tokens to allow for longer responses
+            max_tokens=250,  # Increased max_tokens to allow for longer responses
             n=1,
         )
         # Extracting the response content
