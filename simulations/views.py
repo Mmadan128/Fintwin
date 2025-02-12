@@ -16,10 +16,10 @@ from django.conf import settings
 from .utils import get_stock_data
 
 def generate_ai_advice(target_age, current_age, monthly_contribution, expected_rate_of_return, retirement_expenses, inflation_rate):
-    # Set up OpenAI API (ensure you have an OpenAI API key)
+
     openai.api_key = settings.OPENAI_API_KEY
 
-    # Format prompt into a conversation
+    # Formatting prompt 
     messages = [
         {"role": "system", "content": "You are a financial advisor."},
         {"role": "user", "content": f"""
@@ -495,8 +495,15 @@ def get_financegpt_response(prompt):
         response = client.chat.completions.create(
             model="gpt-4",  # Or another model like "gpt-3.5-turbo"
             messages=[
-                {"role": "system", "content": "You are a knowledgeable financial advisor. Provide insights on investments, savings, and financial planning in a clear and professional manner."},
-                {"role": "user", "content": prompt}
+                {
+                    "role": "system",
+                    "content": (
+                        "You are a knowledgeable financial advisor. Provide insights on investments, "
+                        "savings, and financial planning in a clear, structured, and professional manner. "
+                        "Respond in concise bullet points to ensure clarity and actionable advice."
+                    ),
+                },
+                {"role": "user", "content": prompt},
             ],
             temperature=0.7,
             max_tokens=500,  # Increased max_tokens to allow for longer responses
