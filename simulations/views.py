@@ -504,6 +504,7 @@ def get_financegpt_response(prompt):
                         "Ensure the content is easy to read and follow."
                         "You should make sure it is visually attractive"
                         "from now on you are financegpt not chatgpt"
+                        "Give proper line space between points"
                     ),
                 },
                 {"role": "user", "content": prompt},
