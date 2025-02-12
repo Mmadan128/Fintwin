@@ -1,9 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
     <link
       href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css"
       rel="stylesheet"
@@ -21,6 +22,7 @@
           Revolutionizing Money Management with AI: Accurate Estimations and
           Smart Financial Insights at Your Fingertips!&nbsp;
         </h1>
+
         <h1>
           Revolutionizing Money Management with AI: Accurate Estimations and
           Smart Financial Insights at Your Fingertips!
@@ -38,17 +40,17 @@
           <h1>Finance Twin</h1>
         </div>
         <div class="menu">
-          <a href="#pg1">Home</a>
-          <a href="#pg3">Features</a>
-          <a href="#pg2">About</a>
-          <a href="#pg5">Contact</a>
+          <a href="#">Home</a>
+          <a href="#">Features</a>
+          <a href="#">About</a>
+          <a href="#">Contact</a>
         </div>
       </div>
-      <div class="page1" id="pg1">
+      <div class="page1">
         <div class="cont2">
           <div class="bx1">
             <h1>Introducing<br />Financial Twin</h1>
-            <video src="{% static 'videos/videoplayback.mp4' %}" autoplay muted loop></video>
+            <video src="{% static 'images/videoplayback.mp4' %}" autoplay muted loop></video>
           </div>
           <div class="bx2">
             <h1>
@@ -68,44 +70,35 @@
           <div class="bx3">
             <h4>
               Start your journey to financial freedom with Financial Twin. It’s
-              time to see the bigger picture of your financial future –
-              effortlessly, accurately, and with AI-driven precision.
+              time to see the bigger picture of your financial future – effortlessly, accurately, and with AI-driven precision.
             </h4>
           </div>
         </div>
       </div>
-      <div class="page2" id="pg2">
+      <div class="page2">
         <h1>Our aim</h1>
         <div class="case">
           <div class="box1">
-            <video src="{% static 'videos/aim1.mp4' %}" loop muted autoplay></video>
+            <video src="{% static 'images/aim1.mp4' %}" loop muted autoplay></video>
             <h3 class="case1 cs1">
-              Our aim is to empower individuals and organizations with
-              insightful financial data analysis, personalized advice, and
-              real-time visualizations that foster better financial
-              decision-making.
+              Our aim is to empower individuals and organizations with insightful financial data analysis, personalized advice, and real-time visualizations that foster better financial decision-making.
             </h3>
           </div>
           <div class="box2">
-            <video src="{% static 'videos/aim2.mp4' %}" autoplay loop muted></video>
+            <video src="{% static 'images/aim2.mp4' %}" autoplay loop muted></video>
             <h3 class="case1 cs2">
-              By leveraging advanced analytics and dynamic charting tools, we
-              provide a clear understanding of financial health, helping users
-              optimize their income, expenses, savings, and investments.
+              By leveraging advanced analytics and dynamic charting tools, we provide a clear understanding of financial health, helping users optimize their income, expenses, savings, and investments.
             </h3>
           </div>
           <div class="box3">
-            <video src="{% static 'videos/aim3.mp4' %}" autoplay muted loop></video>
+            <video src="{% static 'images/aim3.mp4' %}" autoplay muted loop></video>
             <h3 class="case1 cs3">
-              Through our innovative platform, Financial Twin seeks to bridge
-              the gap between financial knowledge and action, guiding users
-              toward smarter, more sustainable financial choices that align with
-              their long-term goals.
+              Through our innovative platform, Financial Twin seeks to bridge the gap between financial knowledge and action, guiding users toward smarter, more sustainable financial choices that align with their long-term goals.
             </h3>
           </div>
         </div>
       </div>
-      <div class="page3" id="pg3">
+      <div class="page3">
         <img src="{% static 'images/bacimg.jpeg' %}" alt="" class="bacimg" />
         <h1>Our Services</h1>
         <div class="cont4">
@@ -126,18 +119,16 @@
           </div>
           <div class="con2">
             <div class="circle">
-              <h2>Your own Financial<br />GPT</h2>
+              <h2>Your own Financial<br />Dashboard</h2>
               <img src="{% static 'images/Financial monitor.jpg' %}" alt="" />
             </div>
             <h3>
-              A financial GPT is a digital tool that consolidates and visualizes
-              a user's financial data in one place. It provides a comprehensive
-              overview of key financial metrics, such as income, expenses,
-              savings, investments.
+              A financial dashboard is a digital tool that consolidates and
+              visualizes a user's financial data in one place. It provides a
+              comprehensive overview of key financial metrics, such as income,
+              expenses, savings, investments.
             </h3>
-            <a href="./financegpt.html" target="_blank">
-              <button type="button">Explore!</button>
-            </a>
+            <button type="button">Explore!</button>
           </div>
           <div class="con3">
             <div class="circle">
@@ -190,11 +181,11 @@
               An expense tracker is a tool designed to help you monitor and
               manage your daily spending. By categorizing and recording
               expenses, it provides a clear picture of where your money goes,
-              making it easier to stick to a budget.
+              making it
             </h3>
-            <button type="button">Explore!</button>
           </div>
         </div>
-        <div class="marque">
-          <div class="mark1">
-            <h1>Technology Explore Evolve
+      </div>
+    </div>
+  </body>
+</html>
