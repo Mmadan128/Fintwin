@@ -31,6 +31,7 @@ def generate_ai_advice(target_age, current_age, monthly_contribution, expected_r
         Inflation rate: {inflation_rate * 100}%
 
         Please provide personalized financial advice.
+        Give answers in an easy language ,in points ,in visually good way and give space after each point
         """}
     ]
 
