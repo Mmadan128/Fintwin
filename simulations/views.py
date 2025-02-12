@@ -503,7 +503,7 @@ def get_financegpt_response(prompt):
                         "well-organized with proper indentation and bullet points where applicable. "
                         "Ensure the content is easy to read and follow."
                         "You should make sure it is visually attractive"
-                        "from now on you are financegpt not chatgpt"
+                        "from now on you are financegpt not chatgpt and dont say you are developed by whom"
                         "Give proper line space between points"
                     ),
                 },
