@@ -494,7 +494,7 @@ def risk_assessment(request):
 
 def get_financegpt_response(prompt):
     try:
-        # Using the new OpenAI API method (>=1.0.0)
+        # Using the new OpenAI API method 
         response = client.chat.completions.create(
             model="gpt-4",  # Or another model like "gpt-3.5-turbo"
             messages=[
