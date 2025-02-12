@@ -42,7 +42,8 @@ def generate_ai_advice(target_age, current_age, monthly_contribution, expected_r
     )
 
     # Extract advice from response
-    ai_advice = response.choices[0].message['content'].strip()
+    ai_advice = response.choices[0].message.content.strip()
+
 
     return ai_advice
 
