@@ -17,7 +17,7 @@ from .utils import get_stock_data
 
 def generate_ai_advice(target_age, current_age, monthly_contribution, expected_rate_of_return, retirement_expenses, inflation_rate):
     # Set up OpenAI API (ensure you have an OpenAI API key)
-    openai.api_key = 'your-openai-api-key'
+    openai.api_key = settings.OPENAI_API_KEY
 
     # Format prompt into a conversation
     messages = [
@@ -36,8 +36,8 @@ def generate_ai_advice(target_age, current_age, monthly_contribution, expected_r
     ]
 
     # Make the API call to get AI-generated advice
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",  # Choose the model you need
+    response = client.chat.completions.create(
+        model="gpt-4",  # Choose the model you need
         messages=messages,
         max_tokens=150  # Adjust as necessary
     )
