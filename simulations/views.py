@@ -16,31 +16,36 @@ from django.conf import settings
 from .utils import get_stock_data
 
 def generate_ai_advice(target_age, current_age, monthly_contribution, expected_rate_of_return, retirement_expenses, inflation_rate):
-    # Example API call to generate financial advice
     # Set up OpenAI API (ensure you have an OpenAI API key)
-    openai.api_key = settings.OPENAI_API_KEY
+    openai.api_key = 'your-openai-api-key'
 
-    # Example prompt to the model
-    prompt = f"""
-    You are a personal finance assistant. Given the following data:
-    Target retirement age: {target_age}
-    Current age: {current_age}
-    Monthly contribution: {monthly_contribution} INR
-    Expected rate of return: {expected_rate_of_return * 100}% annually
-    Estimated retirement expenses: {retirement_expenses} INR annually
-    Inflation rate: {inflation_rate * 100}%
+    # Format prompt into a conversation
+    messages = [
+        {"role": "system", "content": "You are a financial advisor."},
+        {"role": "user", "content": f"""
+        Given the following information:
+        Target retirement age: {target_age}
+        Current age: {current_age}
+        Monthly contribution: {monthly_contribution} INR
+        Expected rate of return: {expected_rate_of_return * 100}% annually
+        Estimated retirement expenses: {retirement_expenses} INR annually
+        Inflation rate: {inflation_rate * 100}%
 
-    Provide personalized advice on how to manage these finances to retire comfortably.
-    """
+        Please provide personalized financial advice.
+        """}
+    ]
 
-    response = openai.Completion.create(
-        engine="text-davinci-003",  # You can use a different model as well
-        prompt=prompt,
+    # Make the API call to get AI-generated advice
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",  # Choose the model you need
+        messages=messages,
         max_tokens=150  # Adjust as necessary
     )
 
     # Extract advice from response
-    return response.choices[0].text.strip()
+    ai_advice = response['choices'][0]['message']['content'].strip()
+
+    return ai_advice
 
 def retirement_goal(request):
     chart_url = None
