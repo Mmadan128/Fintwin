@@ -38,7 +38,7 @@ def generate_ai_advice(target_age, current_age, monthly_contribution, expected_r
     response = client.chat.completions.create(
         model="gpt-4",  # Choose the model you need
         messages=messages,
-        max_tokens=150  # Adjust as necessary
+        max_tokens=500  # Adjust as necessary
     )
 
     # Extract advice from response
