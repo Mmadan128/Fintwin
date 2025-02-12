@@ -15,11 +15,38 @@ import openai
 from django.conf import settings 
 from .utils import get_stock_data
 
+def generate_ai_advice(target_age, current_age, monthly_contribution, expected_rate_of_return, retirement_expenses, inflation_rate):
+    # Example API call to generate financial advice
+    # Set up OpenAI API (ensure you have an OpenAI API key)
+    openai.api_key = settings.OPENAI_API_KEY
+
+    # Example prompt to the model
+    prompt = f"""
+    You are a personal finance assistant. Given the following data:
+    Target retirement age: {target_age}
+    Current age: {current_age}
+    Monthly contribution: {monthly_contribution} INR
+    Expected rate of return: {expected_rate_of_return * 100}% annually
+    Estimated retirement expenses: {retirement_expenses} INR annually
+    Inflation rate: {inflation_rate * 100}%
+
+    Provide personalized advice on how to manage these finances to retire comfortably.
+    """
+
+    response = openai.Completion.create(
+        engine="text-davinci-003",  # You can use a different model as well
+        prompt=prompt,
+        max_tokens=150  # Adjust as necessary
+    )
+
+    # Extract advice from response
+    return response.choices[0].text.strip()
+
 def retirement_goal(request):
     chart_url = None
     future_value = None
     adjusted_expenses = None
-    ai_advice = None  # To hold the AI-generated advice
+    ai_advice = None
 
     if request.method == 'POST':
         form = RetirementGoalForm(request.POST)
@@ -48,6 +75,9 @@ def retirement_goal(request):
             # Calculate adjusted retirement expenses considering inflation
             adjusted_expenses = retirement_expenses * (1 + inflation_rate) ** years_to_retirement
 
+            # Generate AI advice based on the form data
+            ai_advice = generate_ai_advice(target_age, current_age, monthly_contribution, expected_rate_of_return, retirement_expenses, inflation_rate)
+
             # Convert the savings_over_time for graphing
             ages = [x[0] for x in savings_over_time]
             values = [x[1] for x in savings_over_time]
@@ -66,22 +96,6 @@ def retirement_goal(request):
             buf.seek(0)
             chart_url = base64.b64encode(buf.read()).decode('utf-8')
 
-            # Generate AI advice based on the user's inputs and results
-            prompt = f"User's current age is {current_age}, target age is {target_age}. They are contributing {monthly_contribution} INR monthly towards their retirement, with an expected annual return of {expected_rate_of_return * 100}% and retirement expenses of {retirement_expenses} INR, adjusted for inflation at {inflation_rate * 100}%. Please provide personalized financial advice and predictions."
-
-            try:
-                # Making a request to GPT-4 or another model
-                openai.api_key = settings.OPENAI_API_KEY
-                response = openai.Completion.create(
-                    engine="gpt-4",  # You can switch to another model if needed
-                    prompt=prompt,
-                    max_tokens=200
-                )
-                ai_advice = response.choices[0].text.strip()
-
-            except Exception as e:
-                ai_advice = "Sorry, we encountered an error while generating advice."
-
     else:
         form = RetirementGoalForm()
 
@@ -90,11 +104,8 @@ def retirement_goal(request):
         'chart_url': chart_url,
         'future_value': future_value,
         'adjusted_expenses': adjusted_expenses,
-        'ai_advice': ai_advice,  # Pass the AI-generated advice to the template
+        'ai_advice': ai_advice,  # Add AI advice to context
     })
-
-
-
 
 def calculate_tax(income):
     # New income tax slabs for FY 2025-26 (AY 2026-27)
