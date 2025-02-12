@@ -310,15 +310,15 @@ def financial_dashboard(request):
 def tax_calculation(request):
     if request.method == 'POST':
         try:
-            # Get all the form values
-            income = float(request.POST.get('income'))
+            # Get user input values
+            income = float(request.POST.get('income', 0))
             section_80c = float(request.POST.get('section_80c', 0))
             section_80d = float(request.POST.get('section_80d', 0))
             hra = float(request.POST.get('hra', 0))
-            age = int(request.POST.get('age'))
-            dependents = int(request.POST.get('dependents'))
+            age = int(request.POST.get('age', 0))
+            dependents = int(request.POST.get('dependents', 0))
 
-            # Define the new tax slabs for FY 2025-26
+            # Define new tax slabs for FY 2025-26
             tax_slabs = [
                 (400000, 0),        
                 (800000, 0.05),     
@@ -329,7 +329,7 @@ def tax_calculation(request):
                 (float('inf'), 0.30) 
             ]
 
-            # Calculate tax for the given income
+            # Calculate tax based on slabs
             tax = 0
             prev_limit = 0
 
@@ -341,42 +341,32 @@ def tax_calculation(request):
                 else:
                     break
 
-            # Apply Section 87A Rebate if eligible
-            if income <= 1200000:
-                tax_rebate = 60000
-                tax = max(0, tax - tax_rebate)
-            else:
-                tax_rebate = 0
+            # Apply Section 87A Rebate (if income ≤ ₹12,00,000)
+            tax_rebate = 60000 if income <= 1200000 else 0
+            tax = max(0, tax - tax_rebate)
 
-            # Apply deductions like Section 80C and Section 80D
-            tax -= section_80c  # Deduct 80C
-            tax -= section_80d  # Deduct 80D
+            # Apply deductions for Section 80C and 80D
+            tax = max(0, tax - section_80c - section_80d)
 
-            # Apply AI-based tax-saving strategies
-              
-
+            # Generate AI-based tax-saving suggestions
             ai_prompt = f"""
-            Given the following details:
+            Given the following financial details:
             - Annual Income: ₹{income}
             - Section 80C Investments: ₹{section_80c}
-            - Section 80D Health Insurance: ₹{section_80d}
-            - House Rent Allowance: ₹{hra}
+            - Section 80D (Health Insurance Premiums): ₹{section_80d}
+            - House Rent Allowance (HRA): ₹{hra}
             - Age: {age}
             - Number of Dependents: {dependents}
 
-            Please suggest personalized tax-saving strategies and deductions that can be utilized to reduce the tax burden in points . give visually proper and proper indentation and give tabs after each point
+            Provide personalized tax-saving strategies in a structured format:
+            - Use bullet points for clarity
+            - Add line spacing between points
+            - Ensure easy readability
             """
 
-            ai_response = openai.ChatCompletion.create(
-             model="gpt-4",
-             messages=[{"role": "system", "content": "You are a tax advisor providing tax-saving strategies for individuals."},
-              {"role": "user", "content": ai_prompt}],
-             max_tokens=150
-            )
+            ai_suggestions = get_financegpt_response(ai_prompt)
 
-            ai_suggestions = ai_response.choices[0].text.strip()
-
-            # Send data to the template
+            # Render template with computed data
             return render(request, 'simulations/tax_calculation.html', {
                 'income': income,
                 'tax': tax,
@@ -390,7 +380,6 @@ def tax_calculation(request):
             })
 
     return render(request, 'simulations/tax_calculation.html')
-
 
 
 def calculate_savings(target_amount, monthly_savings, expected_rate_of_return, years_to_save):
@@ -519,6 +508,7 @@ def get_financegpt_response(prompt):
                         "You should make sure it is visually attractive"
                         "from now on you are financegpt not chatgpt and dont say you are developed by whom"
                         "Give proper line space between points"
+                        
                     ),
                 },
                 {"role": "user", "content": prompt},
