@@ -64,14 +64,14 @@
             background-color: #21867a;
         }
 
-        .results, .chart {
+        .results, .chart, .ai-advice {
             margin-top: 30px;
             background-color: #f1f1f1;
             padding: 20px;
             border-radius: 5px;
         }
 
-        .results p, .chart p {
+        .results p, .chart p, .ai-advice p {
             font-size: 16px;
         }
 
@@ -79,6 +79,19 @@
             display: block;
             margin: 0 auto;
             max-width: 100%;
+        }
+
+        .ai-advice {
+            background-color: #e1f5e1;
+        }
+
+        .ai-advice h3 {
+            color: #2a9d8f;
+        }
+
+        .ai-advice p {
+            font-size: 14px;
+            color: #333;
         }
     </style>
 </head>
@@ -104,7 +117,14 @@
         <div class="results">
             <h3>Results</h3>
             <p><strong>Future Value of Retirement Fund:</strong> ₹{{ future_value|floatformat:2 }}</p>
-            <p><strong>Projected Retirement Expenses:</strong> ₹{{ retirement_expenses|floatformat:2 }}</p>
+            <p><strong>Projected Retirement Expenses:</strong> ₹{{ adjusted_expenses|floatformat:2 }}</p>
+        </div>
+    {% endif %}
+
+    {% if ai_advice %}
+        <div class="ai-advice">
+            <h3>Your Personalized Financial Advice:</h3>
+            <p>{{ ai_advice }}</p>
         </div>
     {% endif %}
 </div>

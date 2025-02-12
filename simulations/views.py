@@ -19,6 +19,8 @@ def retirement_goal(request):
     chart_url = None
     future_value = None
     adjusted_expenses = None
+    ai_advice = None  # To hold the AI-generated advice
+
     if request.method == 'POST':
         form = RetirementGoalForm(request.POST)
         if form.is_valid():
@@ -64,6 +66,22 @@ def retirement_goal(request):
             buf.seek(0)
             chart_url = base64.b64encode(buf.read()).decode('utf-8')
 
+            # Generate AI advice based on the user's inputs and results
+            prompt = f"User's current age is {current_age}, target age is {target_age}. They are contributing {monthly_contribution} INR monthly towards their retirement, with an expected annual return of {expected_rate_of_return * 100}% and retirement expenses of {retirement_expenses} INR, adjusted for inflation at {inflation_rate * 100}%. Please provide personalized financial advice and predictions."
+
+            try:
+                # Making a request to GPT-4 or another model
+                openai.api_key = settings.OPENAI_API_KEY
+                response = openai.Completion.create(
+                    engine="gpt-4",  # You can switch to another model if needed
+                    prompt=prompt,
+                    max_tokens=200
+                )
+                ai_advice = response.choices[0].text.strip()
+
+            except Exception as e:
+                ai_advice = "Sorry, we encountered an error while generating advice."
+
     else:
         form = RetirementGoalForm()
 
@@ -72,9 +90,8 @@ def retirement_goal(request):
         'chart_url': chart_url,
         'future_value': future_value,
         'adjusted_expenses': adjusted_expenses,
+        'ai_advice': ai_advice,  # Pass the AI-generated advice to the template
     })
-
-
 
 
 
