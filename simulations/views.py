@@ -16,7 +16,6 @@ from django.conf import settings
 from .utils import get_stock_data
 
 def generate_ai_advice(target_age, current_age, monthly_contribution, expected_rate_of_return, retirement_expenses, inflation_rate):
-
     openai.api_key = settings.OPENAI_API_KEY
 
     # Formatting prompt 
@@ -43,7 +42,7 @@ def generate_ai_advice(target_age, current_age, monthly_contribution, expected_r
     )
 
     # Extract advice from response
-    ai_advice = response['choices'][0]['message']['content'].strip()
+    ai_advice = response.choices[0].message['content'].strip()
 
     return ai_advice
 
