@@ -15,8 +15,11 @@ import openai
 from django.conf import settings 
 from .utils import get_stock_data
 
+client = openai.OpenAI(api_key=settings.OPENAI_API_KEY)
+openai.api_key = settings.OPENAI_API_KEY
+
 def generate_ai_advice(target_age, current_age, monthly_contribution, expected_rate_of_return, retirement_expenses, inflation_rate):
-    openai.api_key = settings.OPENAI_API_KEY
+    
 
     # Formatting prompt 
     messages = [
@@ -112,29 +115,6 @@ def retirement_goal(request):
         'adjusted_expenses': adjusted_expenses,
         'ai_advice': ai_advice,  # Add AI advice to context
     })
-
-def calculate_tax(income):
-    # New income tax slabs for FY 2025-26 (AY 2026-27)
-    slabs = [
-        (4000000, 0),   # 0% tax for income up to 4 lakh
-        (6000000, 0.05), # 5% tax for income above 4 lakh and up to 6 lakh
-        (9000000, 0.1),  # 10% tax for income above 6 lakh and up to 9 lakh
-        (12000000, 0.2), # 20% tax for income above 9 lakh and up to 12 lakh
-        (15000000, 0.3), # 30% tax for income above 12 lakh
-    ]
-
-    tax = 0
-    previous_limit = 0
-
-    for limit, rate in slabs:
-        if income > previous_limit:
-            taxable_income = min(income, limit) - previous_limit
-            tax += taxable_income * rate
-            previous_limit = limit
-        else:
-            break
-
-    return tax
 
 # Financial Dashboard View
 
@@ -266,7 +246,7 @@ def financial_dashboard(request):
             inflation_rate = form.cleaned_data["inflation_rate"]
 
             # Perform tax calculation
-            tax = calculate_tax(income)
+            
 
             # Financial Data Dictionary
             financial_data = {
@@ -330,18 +310,23 @@ def financial_dashboard(request):
 def tax_calculation(request):
     if request.method == 'POST':
         try:
-            # Get the income entered by the user
+            # Get all the form values
             income = float(request.POST.get('income'))
+            section_80c = float(request.POST.get('section_80c', 0))
+            section_80d = float(request.POST.get('section_80d', 0))
+            hra = float(request.POST.get('hra', 0))
+            age = int(request.POST.get('age'))
+            dependents = int(request.POST.get('dependents'))
 
-            # Define the new tax slabs for FY 2025-26 (Assessment Year 2026-27)
+            # Define the new tax slabs for FY 2025-26
             tax_slabs = [
-                (400000, 0),        # Up to ₹4,00,000 - No tax
-                (800000, 0.05),     # ₹4,00,001 to ₹8,00,000 - 5%
-                (1200000, 0.10),    # ₹8,00,001 to ₹12,00,000 - 10%
-                (1600000, 0.15),    # ₹12,00,001 to ₹16,00,000 - 15%
-                (2000000, 0.20),    # ₹16,00,001 to ₹20,00,000 - 20%
-                (2400000, 0.25),    # ₹20,00,001 to ₹24,00,000 - 25%
-                (float('inf'), 0.30) # Above ₹24,00,000 - 30%
+                (400000, 0),        
+                (800000, 0.05),     
+                (1200000, 0.10),    
+                (1600000, 0.15),    
+                (2000000, 0.20),    
+                (2400000, 0.25),    
+                (float('inf'), 0.30) 
             ]
 
             # Calculate tax for the given income
@@ -356,27 +341,55 @@ def tax_calculation(request):
                 else:
                     break
 
-            # Apply Section 87A Rebate if eligible (income <= ₹12,00,000)
+            # Apply Section 87A Rebate if eligible
             if income <= 1200000:
                 tax_rebate = 60000
                 tax = max(0, tax - tax_rebate)
             else:
                 tax_rebate = 0
 
+            # Apply deductions like Section 80C and Section 80D
+            tax -= section_80c  # Deduct 80C
+            tax -= section_80d  # Deduct 80D
+
+            # Apply AI-based tax-saving strategies
+              
+
+            ai_prompt = f"""
+            Given the following details:
+            - Annual Income: ₹{income}
+            - Section 80C Investments: ₹{section_80c}
+            - Section 80D Health Insurance: ₹{section_80d}
+            - House Rent Allowance: ₹{hra}
+            - Age: {age}
+            - Number of Dependents: {dependents}
+
+            Please suggest personalized tax-saving strategies and deductions that can be utilized to reduce the tax burden.
+            """
+
+            ai_response = openai.Completion.create(
+                model="gpt-4",
+                prompt=ai_prompt,
+                max_tokens=150
+            )
+
+            ai_suggestions = ai_response.choices[0].text.strip()
+
             # Send data to the template
             return render(request, 'simulations/tax_calculation.html', {
                 'income': income,
                 'tax': tax,
-                'tax_rebate': tax_rebate
+                'tax_rebate': tax_rebate,
+                'ai_suggestions': ai_suggestions  
             })
 
         except ValueError:
-            # Handle invalid input
             return render(request, 'simulations/tax_calculation.html', {
-                'error': "Please enter a valid income."
+                'error': "Please enter valid information."
             })
 
     return render(request, 'simulations/tax_calculation.html')
+
 
 
 def calculate_savings(target_amount, monthly_savings, expected_rate_of_return, years_to_save):
@@ -488,7 +501,6 @@ def risk_assessment(request):
     
     return render(request, 'simulations/risk_assessment.html', {'form': form, 'risk_assessment': risk_assessment})
 
-client = openai.OpenAI(api_key=settings.OPENAI_API_KEY)
 
 def get_financegpt_response(prompt):
     try:

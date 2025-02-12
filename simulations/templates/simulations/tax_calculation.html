@@ -34,7 +34,7 @@
             display: inline-block;
         }
 
-        input[type="number"] {
+        input[type="number"], input[type="text"] {
             width: 100%;
             padding: 8px;
             margin: 10px 0 20px;
@@ -73,6 +73,14 @@
             font-weight: bold;
             margin-top: 20px;
         }
+
+        .ai-suggestions {
+            background-color: #e0f7fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
     </style>
 </head>
 <body>
@@ -80,11 +88,28 @@
 <div class="container">
     <h1>Income Tax Calculation</h1>
 
-    <form method="POST">
+    <form method="POST" action="{% url 'tax_calculation' %}">
         {% csrf_token %}
-        <label for="income">Enter your annual income (in ₹):</label>
-        <input type="number" id="income" name="income" required>
-        <button type="submit">Calculate</button>
+        
+        <label for="income">Income (INR):</label>
+        <input type="text" id="income" name="income" required><br><br>
+        
+        <label for="section_80c">Section 80C Investments (INR):</label>
+        <input type="text" id="section_80c" name="section_80c"><br><br>
+        
+        <label for="section_80d">Section 80D (Health Insurance Premiums - INR):</label>
+        <input type="text" id="section_80d" name="section_80d"><br><br>
+        
+        <label for="hra">House Rent Allowance (HRA - INR):</label>
+        <input type="text" id="hra" name="hra"><br><br>
+        
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" min="18" required><br><br>
+        
+        <label for="dependents">Number of Dependents:</label>
+        <input type="number" id="dependents" name="dependents" min="0" value="0"><br><br>
+    
+        <button type="submit">Calculate Tax</button>
     </form>
 
     {% if income %}
@@ -97,6 +122,13 @@
                 <p><strong>Rebate under Section 87A:</strong> ₹{{ tax_rebate }}</p>
                 <p><strong>Tax after rebate:</strong> ₹{{ tax }}</p>
             {% endif %}
+        </div>
+    {% endif %}
+
+    {% if ai_suggestions %}
+        <div class="ai-suggestions">
+            <h3>AI Suggestions for Tax Saving</h3>
+            <p>{{ ai_suggestions }}</p>
         </div>
     {% endif %}
 
