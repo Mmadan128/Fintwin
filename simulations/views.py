@@ -364,13 +364,14 @@ def tax_calculation(request):
             - Age: {age}
             - Number of Dependents: {dependents}
 
-            Please suggest personalized tax-saving strategies and deductions that can be utilized to reduce the tax burden.
+            Please suggest personalized tax-saving strategies and deductions that can be utilized to reduce the tax burden in points . give visually proper and proper indentation and give tabs after each point
             """
 
-            ai_response = openai.Completion.create(
-                model="gpt-4",
-                prompt=ai_prompt,
-                max_tokens=150
+            ai_response = openai.ChatCompletion.create(
+             model="gpt-4",
+             messages=[{"role": "system", "content": "You are a tax advisor providing tax-saving strategies for individuals."},
+              {"role": "user", "content": ai_prompt}],
+             max_tokens=150
             )
 
             ai_suggestions = ai_response.choices[0].text.strip()
