@@ -21,7 +21,7 @@ openai.api_key = settings.OPENAI_API_KEY
 def generate_ai_advice(target_age, current_age, monthly_contribution, expected_rate_of_return, retirement_expenses, inflation_rate):
     
 
-    # Formatting prompt 
+     
     messages = [
         {"role": "system", "content": "You are a financial advisor."},
         {"role": "user", "content": f"""
@@ -38,14 +38,14 @@ def generate_ai_advice(target_age, current_age, monthly_contribution, expected_r
         """}
     ]
 
-    # Make the API call to get AI-generated advice
+    
     response = client.chat.completions.create(
-        model="gpt-4",  # Choose the model you need
+        model="gpt-4",  
         messages=messages,
-        max_tokens=500  # Adjust as necessary
+        max_tokens=500  
     )
 
-    # Extract advice from response
+   
     ai_advice = response.choices[0].message.content.strip()
 
 
@@ -60,7 +60,7 @@ def retirement_goal(request):
     if request.method == 'POST':
         form = RetirementGoalForm(request.POST)
         if form.is_valid():
-            # Get form data
+            
             target_age = form.cleaned_data['target_age']
             current_age = form.cleaned_data['current_age']
             monthly_contribution = form.cleaned_data['monthly_contribution']
@@ -68,30 +68,29 @@ def retirement_goal(request):
             retirement_expenses = form.cleaned_data['retirement_expenses']
             inflation_rate = form.cleaned_data['inflation_rate'] / 100
 
-            # Calculate the number of years to retirement
+            
             years_to_retirement = target_age - current_age
             future_value = 0
             savings_over_time = []
 
-            # Calculate future value of retirement fund with monthly contributions
+            
             for age in range(current_age, target_age + 1):
-                future_value += monthly_contribution * 12  # Annual contribution
-                future_value *= (1 + expected_rate_of_return)  # Growth for the year
-
+                future_value += monthly_contribution * 12 
+                future_value *= (1 + expected_rate_of_return)  
                 # Record projected savings for each year
                 savings_over_time.append((age, future_value))
 
-            # Calculate adjusted retirement expenses considering inflation
+            
             adjusted_expenses = retirement_expenses * (1 + inflation_rate) ** years_to_retirement
 
-            # Generate AI advice based on the form data
+            
             ai_advice = generate_ai_advice(target_age, current_age, monthly_contribution, expected_rate_of_return, retirement_expenses, inflation_rate)
 
-            # Convert the savings_over_time for graphing
+            
             ages = [x[0] for x in savings_over_time]
             values = [x[1] for x in savings_over_time]
 
-            # Plotting the chart
+            
             fig, ax = plt.subplots()
             ax.plot(ages, values, label="Projected Savings")
             ax.set(xlabel='Age', ylabel='Savings (INR)',
@@ -99,7 +98,7 @@ def retirement_goal(request):
             ax.grid(True)
             plt.tight_layout()
 
-            # Convert the plot to a PNG image for embedding in the page
+          
             buf = BytesIO()
             plt.savefig(buf, format='png')
             buf.seek(0)
@@ -113,10 +112,10 @@ def retirement_goal(request):
         'chart_url': chart_url,
         'future_value': future_value,
         'adjusted_expenses': adjusted_expenses,
-        'ai_advice': ai_advice,  # Add AI advice to context
+        'ai_advice': ai_advice,  
     })
 
-# Financial Dashboard View
+
 
 
 def get_stock_price(symbol="AAPL"):
@@ -138,35 +137,35 @@ def get_crypto_price(crypto_id="bitcoin"):
 
 
 
-# List of stock symbols (NSE stocks in this case)
+
 stock_symbols = [
-    'HINDUNILVR.NS',  # Hindustan Unilever
-    'RELIANCE.NS',     # Reliance Industries
-    'INFY.NS',         # Infosys
-    'LT.NS',           # Larsen & Toubro
-    'HDFCBANK.NS',     # HDFC Bank
-    'ICICIBANK.NS',    # ICICI Bank
-    'TCS.NS',          # Tata Consultancy Services
-    'SBIN.NS',         # State Bank of India
-    'BAJFINANCE.NS',   # Bajaj Finance
-    'ITC.NS',          # ITC Ltd.
-    'KOTAKBANK.NS',    # Kotak Mahindra Bank
-    'AXISBANK.NS',     # Axis Bank
-    'MARUTI.NS',       # Maruti Suzuki
-    'WIPRO.NS',        # Wipro
-    'M&M.NS'           # Mahindra & Mahindra
+    'HINDUNILVR.NS',  
+    'RELIANCE.NS',    
+    'INFY.NS',         
+    'LT.NS',          
+    'HDFCBANK.NS',     
+    'ICICIBANK.NS',    
+    'TCS.NS',          
+    'SBIN.NS',         
+    'BAJFINANCE.NS',   
+    'ITC.NS',         
+    'KOTAKBANK.NS',    
+    'AXISBANK.NS',     
+    'MARUTI.NS',       
+    'WIPRO.NS',        
+    'M&M.NS'           
 ]
 
 def stock_view(request):
     gainers, losers = [], []
     
-    # Check if the request method is POST and user has submitted symbols
+   
     if request.method == 'POST':
         form = StockForm(request.POST)
         if form.is_valid():
-            stock_symbols = form.cleaned_data['stock_symbols']  # Assume it's a comma-separated string of symbols
+            stock_symbols = form.cleaned_data['stock_symbols']  
             symbols_list = stock_symbols.split(',')
-            gainers, losers = get_stock_data(symbols_list)  # Fetch stock data
+            gainers, losers = get_stock_data(symbols_list)  
     else:
         form = StockForm()
 
@@ -175,7 +174,7 @@ def stock_view(request):
         'gainers': gainers,
         'losers': losers,
     })
-# Generate a chart for market overview (Gainers vs Losers)
+
 def plot_market_overview(gainers, losers):
     labels = ['Top Gainers', 'Top Losers']
     sizes = [len(gainers), len(losers)]
@@ -194,19 +193,19 @@ def plot_market_overview(gainers, losers):
 
 
 def market_data(request):
-    # Fetching the data for top gainers and losers
+   
     try:
-        # Get top gainers and losers from NSE (India) using Yahoo Finance
-        nse_top_gainers = yf.download('^NSEBANK', period='1d')  # Sample for Nifty Bank, you can adjust
-        nse_top_losers = yf.download('^NSEAUTO', period='1d')   # Sample for Nifty Auto, adjust as necessary
         
-        # Ensure that the data has been returned
+        nse_top_gainers = yf.download('^NSEBANK', period='1d') 
+        nse_top_losers = yf.download('^NSEAUTO', period='1d')   
+        
+       
         if not nse_top_gainers.empty and not nse_top_losers.empty:
             # Convert data to DataFrame
             gainers_data = pd.DataFrame(nse_top_gainers)
             losers_data = pd.DataFrame(nse_top_losers)
         else:
-            # Handle the case where data was not found or fetched
+            
             gainers_data = None
             losers_data = None
     except Exception as e:
@@ -214,7 +213,6 @@ def market_data(request):
         losers_data = None
         error_message = str(e)
 
-    # Render the template with the data
     return render(
         request,
         "simulations/market_data.html",
@@ -236,7 +234,7 @@ def financial_dashboard(request):
     if request.method == "POST":
         form = FinancialDataForm(request.POST)
         if form.is_valid():
-            # Extract form data
+            
             income = form.cleaned_data["income"]
             target_age = form.cleaned_data["target_age"]
             current_age = form.cleaned_data["current_age"]
@@ -245,10 +243,10 @@ def financial_dashboard(request):
             expected_monthly_retirement_expenses = form.cleaned_data["expected_monthly_retirement_expenses"]
             inflation_rate = form.cleaned_data["inflation_rate"]
 
-            # Perform tax calculation
+           
             
 
-            # Financial Data Dictionary
+           
             financial_data = {
                 'income': income,
                 'target_age': target_age,
@@ -259,34 +257,34 @@ def financial_dashboard(request):
                 'inflation_rate': inflation_rate,
             }
 
-            # Projected Savings Over Time
+           
             years_to_retirement = target_age - current_age
             ages = [current_age + i for i in range(years_to_retirement + 1)]
             projected_savings = []
 
-            # Calculate projected savings over time with compound interest
+           
             current_savings = 0
             for age in ages:
                 current_savings = current_savings * (1 + expected_rate_of_return / 100) + monthly_contribution * 12
                 projected_savings.append(current_savings)
 
-            # Plotting the savings over time
+            
             fig, ax = plt.subplots()
             ax.plot(ages, projected_savings, label="Projected Savings")
             ax.set_xlabel('Age')
             ax.set_ylabel('Savings (INR)')
             ax.set_title('Projected Retirement Savings Over Time')
 
-            # Save plot to a PNG image in memory
+            
             buf = io.BytesIO()
             plt.savefig(buf, format="png")
             buf.seek(0)
             image_data = base64.b64encode(buf.read()).decode("utf-8")
             buf.close()
 
-            # Fetch real-time stock and crypto prices
-            stock_price = get_stock_price("AAPL")  # Example for Apple stock
-            crypto_price = get_crypto_price("bitcoin")  # Example for Bitcoin
+            
+            stock_price = get_stock_price("AAPL")  
+            crypto_price = get_crypto_price("bitcoin")  
 
     else:
         form = FinancialDataForm()
@@ -310,7 +308,7 @@ def financial_dashboard(request):
 def tax_calculation(request):
     if request.method == 'POST':
         try:
-            # Get user input values
+            
             income = float(request.POST.get('income', 0))
             section_80c = float(request.POST.get('section_80c', 0))
             section_80d = float(request.POST.get('section_80d', 0))
@@ -318,7 +316,7 @@ def tax_calculation(request):
             age = int(request.POST.get('age', 0))
             dependents = int(request.POST.get('dependents', 0))
 
-            # Define new tax slabs for FY 2025-26
+           
             tax_slabs = [
                 (400000, 0),        
                 (800000, 0.05),     
@@ -329,7 +327,7 @@ def tax_calculation(request):
                 (float('inf'), 0.30) 
             ]
 
-            # Calculate tax based on slabs
+            
             tax = 0
             prev_limit = 0
 
@@ -341,14 +339,14 @@ def tax_calculation(request):
                 else:
                     break
 
-            # Apply Section 87A Rebate (if income ≤ ₹12,00,000)
+            
             tax_rebate = 60000 if income <= 1200000 else 0
             tax = max(0, tax - tax_rebate)
 
-            # Apply deductions for Section 80C and 80D
+           
             tax = max(0, tax - section_80c - section_80d)
 
-            # Generate AI-based tax-saving suggestions
+           
             ai_prompt = f"""
             Given the following financial details:
             - Annual Income: ₹{income}
@@ -366,7 +364,7 @@ def tax_calculation(request):
 
             ai_suggestions = get_financegpt_response(ai_prompt)
 
-            # Render template with computed data
+
             return render(request, 'simulations/tax_calculation.html', {
                 'income': income,
                 'tax': tax,
@@ -390,7 +388,7 @@ def calculate_savings(target_amount, monthly_savings, expected_rate_of_return, y
 
     for month in range(1, months_to_save + 1):
         savings += monthly_savings
-        savings *= (1 + monthly_rate_of_return)  # Apply monthly compounded interest
+        savings *= (1 + monthly_rate_of_return) 
         savings_over_time.append(savings)
 
         if savings >= target_amount:
@@ -399,7 +397,7 @@ def calculate_savings(target_amount, monthly_savings, expected_rate_of_return, y
     return savings_over_time, savings, month
 
 
-# Saving Plans View
+
 def saving_plans(request):
     savings_over_time = []
     final_savings = 0
@@ -409,18 +407,18 @@ def saving_plans(request):
     if request.method == "POST":
         form = SavingPlanForm(request.POST)
         if form.is_valid():
-            # Extract form data
+
             target_amount = form.cleaned_data["target_amount"]
             monthly_savings = form.cleaned_data["monthly_savings"]
             expected_rate_of_return = form.cleaned_data["expected_rate_of_return"]
             years_to_save = form.cleaned_data["years_to_save"]
 
-            # Calculate the savings plan
+
             savings_over_time, final_savings, months_taken = calculate_savings(
                 target_amount, monthly_savings, expected_rate_of_return, years_to_save
             )
 
-            # Generate a plot for savings over time
+  
             months = [i for i in range(1, months_taken + 1)]
             fig, ax = plt.subplots()
             ax.plot(months, savings_over_time, label="Cumulative Savings", color="b")
@@ -429,7 +427,6 @@ def saving_plans(request):
             ax.set_title("Saving Plan Over Time")
             ax.legend()
 
-            # Save plot to a PNG image in memory
             buf = io.BytesIO()
             plt.savefig(buf, format="png")
             buf.seek(0)
@@ -453,14 +450,14 @@ def saving_plans(request):
 
 
 def expense_tracker(request):
-    # Handle the form submission
+    
     if request.method == 'POST':
         form = ExpenseForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('expense_tracker')  # Redirect to the same page after submission
+            return redirect('expense_tracker')  
     
-    # Display the expenses
+    
     expenses = Expense.objects.all()
     total_expenses = sum(expense.amount for expense in expenses)
     
@@ -478,10 +475,10 @@ def risk_assessment(request):
     if request.method == 'POST':
         form = RiskAssessmentForm(request.POST)
         if form.is_valid():
-            # Save the form and calculate risk score
+     
             risk_assessment = form.save()
             risk_assessment.calculate_risk()
-            # Pass the risk assessment object to the template
+
             return render(request, 'simulations/risk_assessment.html', {
                 'form': form, 
                 'risk_assessment': risk_assessment
@@ -494,9 +491,9 @@ def risk_assessment(request):
 
 def get_financegpt_response(prompt):
     try:
-        # Using the new OpenAI API method 
+       
         response = client.chat.completions.create(
-            model="gpt-4",  # Or another model like "gpt-3.5-turbo"
+            model="gpt-4",  
             messages=[
                 {
                     "role": "system",
@@ -514,10 +511,10 @@ def get_financegpt_response(prompt):
                 {"role": "user", "content": prompt},
             ],
             temperature=0.7,
-            max_tokens=250,  # Increased max_tokens to allow for longer responses
+            max_tokens=250,  
             n=1,
         )
-        # Extracting the response content
+       
         return response.choices[0].message.content.strip()
     except Exception as e:
         return f"Error: {str(e)}"
@@ -525,19 +522,21 @@ def get_financegpt_response(prompt):
 
 
 def financegpt_view(request):
-    gpt_response = None  # Initialize as None by default
+    gpt_response = None  
 
     if request.method == "POST":
         gpt_prompt = request.POST.get('gpt_prompt', '').strip()
         if gpt_prompt:
             gpt_response = get_financegpt_response(gpt_prompt)
         else:
-            gpt_response = "Please enter a question above."  # Only set when the form is submitted but empty
+            gpt_response = "Please enter a question above." 
 
     return render(
         request,
-        "simulations/financegpt.html",  # Your template file
+        "simulations/financegpt.html",  
         {
-            "gpt_response": gpt_response,  # Pass the GPT response to the template
+            "gpt_response": gpt_response,  
         }
     )
+
+
