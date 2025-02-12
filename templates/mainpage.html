@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -37,7 +36,7 @@
     <div class="main">
       <div class="nav">
         <div class="head">
-          <img src="{% static 'media/pixsdd-removebg-preview.png' %}" />
+          <img src="{{ MEDIA_URL }}pixsdd-removebg-preview.png" />
           <h1>Finance Twin</h1>
         </div>
         <div class="menu">
@@ -51,7 +50,7 @@
         <div class="cont2">
           <div class="bx1">
             <h1>Introducing<br />Financial Twin</h1>
-            <video src="{% static 'media/videoplayback.mp4' %}" autoplay muted loop></video>
+            <video src="{{ MEDIA_URL }}videoplayback.mp4" autoplay muted loop></video>
           </div>
           <div class="bx2">
             <h1>
@@ -80,19 +79,19 @@
         <h1>Our aim</h1>
         <div class="case">
           <div class="box1">
-            <video src="{% static 'media/aim1.mp4' %}" loop muted autoplay></video>
+            <video src="{{ MEDIA_URL }}aim1.mp4" loop muted autoplay></video>
             <h3 class="case1 cs1">
               Our aim is to empower individuals and organizations with insightful financial data analysis, personalized advice, and real-time visualizations that foster better financial decision-making.
             </h3>
           </div>
           <div class="box2">
-            <video src="{% static 'media/aim2.mp4' %}" autoplay loop muted></video>
+            <video src="{{ MEDIA_URL }}aim2.mp4" autoplay loop muted></video>
             <h3 class="case1 cs2">
               By leveraging advanced analytics and dynamic charting tools, we provide a clear understanding of financial health, helping users optimize their income, expenses, savings, and investments.
             </h3>
           </div>
           <div class="box3">
-            <video src="{% static 'media/aim3.mp4' %}" autoplay muted loop></video>
+            <video src="{{ MEDIA_URL }}aim3.mp4" autoplay muted loop></video>
             <h3 class="case1 cs3">
               Through our innovative platform, Financial Twin seeks to bridge the gap between financial knowledge and action, guiding users toward smarter, more sustainable financial choices that align with their long-term goals.
             </h3>
@@ -100,13 +99,13 @@
         </div>
       </div>
       <div class="page3">
-        <img src="{% static 'media/bacimg.jpeg' %}" alt="" class="bacimg" />
+        <img src="{{ MEDIA_URL }}bacimg.jpeg" alt="" class="bacimg" />
         <h1>Our Services</h1>
         <div class="cont4">
           <div class="con1">
             <div class="circle">
               <h2>AI Powered<br />Retirement goal<br />predictor</h2>
-              <img src="{% static 'media/Financial Decision making.jpg' %}" alt="" />
+              <img src="{{ MEDIA_URL }}Financial Decision making.jpg" alt="" />
             </div>
             <h3>
               The AI-powered retirement goal predictor is an advanced tool that
@@ -121,7 +120,7 @@
           <div class="con2">
             <div class="circle">
               <h2>Your own Financial<br />Dashboard</h2>
-              <img src="{% static 'media/Financial monitor.jpg' %}" alt="" />
+              <img src="{{ MEDIA_URL }}Financial monitor.jpg" alt="" />
             </div>
             <h3>
               A financial dashboard is a digital tool that consolidates and
@@ -134,7 +133,7 @@
           <div class="con3">
             <div class="circle">
               <h2>No more tax stress<br />enter, calculate, relax!</h2>
-              <img src="{% static 'media/tax.jpg' %}" alt="" />
+              <img src="{{ MEDIA_URL }}tax.jpg" alt="" />
             </div>
             <h3>
               A tax calculator is a powerful tool that simplifies the process of
@@ -147,7 +146,7 @@
           <div class="con1">
             <div class="circle">
               <h2>Save Smarter<br />not harder</h2>
-              <img src="{% static 'media/savings.avif' %}" alt="" />
+              <img src="{{ MEDIA_URL }}savings.avif" alt="" />
             </div>
             <h3>
               A savings plan is a strategic approach to managing your finances
@@ -160,7 +159,7 @@
           <div class="con2">
             <div class="circle">
               <h2>plan the unexpected-<br />ai powered<br />risk assessment</h2>
-              <img src="{% static 'media/risk.jpg' %}" alt="" />
+              <img src="{{ MEDIA_URL }}risk.jpg" alt="" />
             </div>
             <h3>
               Risk assessment is the process of identifying, evaluating, and
@@ -176,10 +175,18 @@
                 every penny counts!<br />
                 Expense tracker
               </h2>
-              <img src="{% static 'media/expense.jpg' %}" alt="" />
+              <img src="{{ MEDIA_URL }}expense.jpg" alt="" />
             </div>
             <h3>
               An expense tracker is a tool designed to help you monitor and
               manage your daily spending. By categorizing and recording
               expenses, it provides a clear picture of where your money goes,
-              making it
+              making it easier to make informed decisions.
+            </h3>
+            <button type="button">Explore!</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
