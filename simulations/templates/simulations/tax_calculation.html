@@ -1,141 +1,117 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Income Tax Calculation</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
+    <link rel="stylesheet" href="{% static 'css/tax.css' %}" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="main">
+      <div class="page1">
+        <img src="{% static 'images/king.webp' %}" alt="" class="bac" />
+        <div class="nav">
+          <div class="head">
+            <img src="{% static 'images/pixsdd-removebg-preview.png' %}" />
+            <h1>Finance Twin</h1>
+          </div>
+          <div class="menu">
+            <a href="./index.html">Home</a>
+            <a href="">Features</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+          </div>
+        </div>
+        <h1 class="head">AI-powered - Income tax predictor</h1>
+        <div class="marque">
+          <h2>Predict your income tax.&nbsp;</h2>
+          <h2>Predict your income tax.&nbsp;</h2>
+          <h2>Predict your income tax.&nbsp;</h2>
+          <h2>Predict your income tax.&nbsp;</h2>
+        </div>
+        <form method="POST" action="{% url 'tax_calculation' %}" class="form1">
+          {% csrf_token %}
+          <div class="cont">
+            <div class="bx">
+              <label for="income">Income (INR):</label>
+              <input type="text" id="income" name="income" required /><br /><br />
+            </div>
+            <div class="bx">
+              <label for="section_80c">Section 80C Investments (INR):</label>
+              <input
+                type="text"
+                id="section_80c"
+                name="section_80c"
+              /><br /><br />
+            </div>
+            <div class="bx">
+              <label for="section_80d">Section 80D (Health Insurance Premiums - INR):</label>
+              <input
+                type="text"
+                id="section_80d"
+                name="section_80d"
+              /><br /><br />
+            </div>
+            <div class="bx">
+              <label for="hra">House Rent Allowance (HRA - INR):</label>
+              <input type="text" id="hra" name="hra" /><br /><br />
+            </div>
+            <div class="bx">
+              <label for="age">Age:</label>
+              <input
+                type="number"
+                id="age"
+                name="age"
+                min="18"
+                required
+              /><br /><br />
+            </div>
+            <div class="bx">
+              <label for="dependents">Number of Dependents:</label>
+              <input
+                type="number"
+                id="dependents"
+                name="dependents"
+                min="0"
+                value="0"
+              /><br /><br />
+              <button type="submit">Calculate Tax</button>
+            </div>
+            {% if income %}
+            <div class="results">
+              <h2>Results</h2>
+              <p><strong>Your annual income:</strong> ₹{{ income }}</p>
+              <p><strong>Your total tax liability:</strong> ₹{{ tax }}</p>
 
-        .container {
-            width: 80%;
-            max-width: 600px;
-            margin: 50px auto;
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            text-align: center;
-            color: #2a9d8f;
-        }
-
-        label {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            display: inline-block;
-        }
-
-        input[type="number"], input[type="text"] {
-            width: 100%;
-            padding: 8px;
-            margin: 10px 0 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        button {
-            background-color: #2a9d8f;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        button:hover {
-            background-color: #21867a;
-        }
-
-        .results {
-            background-color: #f1f1f1;
-            padding: 15px;
-            border-radius: 5px;
-            margin-top: 30px;
-        }
-
-        .results p {
-            font-size: 16px;
-        }
-
-        .error {
-            color: red;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-
-        .ai-suggestions {
-            background-color: #e0f7fa;
-            padding: 15px;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
-
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <h1>Income Tax Calculation</h1>
-
-    <form method="POST" action="{% url 'tax_calculation' %}">
-        {% csrf_token %}
-        
-        <label for="income">Income (INR):</label>
-        <input type="text" id="income" name="income" required><br><br>
-        
-        <label for="section_80c">Section 80C Investments (INR):</label>
-        <input type="text" id="section_80c" name="section_80c"><br><br>
-        
-        <label for="section_80d">Section 80D (Health Insurance Premiums - INR):</label>
-        <input type="text" id="section_80d" name="section_80d"><br><br>
-        
-        <label for="hra">House Rent Allowance (HRA - INR):</label>
-        <input type="text" id="hra" name="hra"><br><br>
-        
-        <label for="age">Age:</label>
-        <input type="number" id="age" name="age" min="18" required><br><br>
-        
-        <label for="dependents">Number of Dependents:</label>
-        <input type="number" id="dependents" name="dependents" min="0" value="0"><br><br>
-    
-        <button type="submit">Calculate Tax</button>
-    </form>
-
-    {% if income %}
-        <div class="results">
-            <h2>Results</h2>
-            <p><strong>Your annual income:</strong> ₹{{ income }}</p>
-            <p><strong>Your total tax liability:</strong> ₹{{ tax }}</p>
-
-            {% if tax_rebate %}
-                <p><strong>Rebate under Section 87A:</strong> ₹{{ tax_rebate }}</p>
-                <p><strong>Tax after rebate:</strong> ₹{{ tax }}</p>
+              {% if tax_rebate %}
+              <p><strong>Rebate under Section 87A:</strong> ₹{{ tax_rebate }}</p>
+              <p><strong>Tax after rebate:</strong> ₹{{ tax }}</p>
+              {% endif %}
+            </div>
             {% endif %}
-        </div>
-    {% endif %}
-
-    {% if ai_suggestions %}
-        <div class="ai-suggestions">
-            <h3>AI Suggestions for Tax Saving</h3>
-            <p>{{ ai_suggestions }}</p>
-        </div>
-    {% endif %}
-
-    {% if error %}
-        <p class="error">{{ error }}</p>
-    {% endif %}
-</div>
-
-</body>
+            {% if ai_suggestions %}
+            <div class="ai-suggestions">
+              <h2>AI Suggestions for Tax Saving 🔥</h2>
+              <div class="suggestions">{{ ai_suggestions }}</div>
+            </div>
+            {% endif %}
+          </div>
+        </form>
+      </div>
+      <h3 class="footer">&copy; All Rights Reserved by Financial Twin</h3>
+    </div>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+    integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer">
+  </script>
+  <script src="{% static 'js/tax.js' %}"></script>
 </html>
