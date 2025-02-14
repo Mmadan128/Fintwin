@@ -12,12 +12,12 @@
 
 </head>
 <body>
-    <div class="main">
+    <div class="main" data-scroll-container>
         <!-- Background Image -->
         <img src="{% static 'simulations/images/retire_bac.jpg' %}" alt="Retirement Background" class="ret"/>
 
         <!-- Navigation Bar -->
-        <div class="nav">
+        <div class="nav" data-scroll>
             <div class="head">
                 <img src="{% static 'simulations/images/pixsdd-removebg-preview.png' %}" alt="Logo"/>
                 <h1>Finance Twin</h1>
@@ -30,10 +30,10 @@
             </div>
         </div>
 
-        <h2 class="head">Retirement Goal Form</h2>
+        <h2 class="head" data-scroll>Retirement Goal Form</h2>
 
         <!-- Marquee Effect -->
-        <div class="marque">
+        <div class="marque" data-scroll>
             <h2>Set Your Retirement Goal.&nbsp;</h2>
             <h2>Set Your Retirement Goal.&nbsp;</h2>
             <h2>Set Your Retirement Goal.&nbsp;</h2>
@@ -68,7 +68,7 @@
 
                 <!-- Display Chart if Available -->
                 {% if chart_url %}
-                <div class="chart">
+                <div class="chart" data-scroll>
                     <h3 class="head2">Retirement Savings Over Time</h3>
                     <img src="data:image/png;base64,{{ chart_url }}" alt="Retirement Goal Chart"/>
                 </div>
@@ -76,7 +76,7 @@
 
                 <!-- Display Results if Available -->
                 {% if future_value %}
-                <div class="results">
+                <div class="results" data-scroll>
                     <h3>Results</h3>
                     <p><strong>Future Value of Retirement Fund:</strong> ₹{{ future_value|floatformat:2 }}</p>
                     <p><strong>Projected Retirement Expenses:</strong> ₹{{ adjusted_expenses|floatformat:2 }}</p>
@@ -85,7 +85,7 @@
 
                 <!-- Display AI-Based Financial Advice if Available -->
                 {% if ai_advice %}
-                <div class="ai-advice">
+                <div class="ai-advice" data-scroll>
                     <h3>Your Personalized Financial Advice:</h3>
                     <div class="suggestions">{{ ai_advice }}</div>
                 </div>
@@ -93,7 +93,7 @@
             </div>
         </form>
 
-        <h3 class="footer">&copy; All Rights Reserved by Finance Twin</h3>
+        <h3 class="footer" data-scroll>&copy; All Rights Reserved by Finance Twin</h3>
     </div>
 
     <!-- JS Libraries -->
@@ -103,5 +103,22 @@
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{% static 'simulations/js/retire.js' %}"></script>
 
+    <script>
+        // Initialize Locomotive Scroll
+        const scroll = new LocomotiveScroll({
+            el: document.querySelector('.main'),
+            smooth: true
+        });
+
+        // GSAP animation for the '.main' element
+        gsap.from(".main", {
+            y: 1000,
+            opacity: 0,
+            duration: 1.2,
+            onComplete: () => {
+                scroll.update(); // Update Locomotive Scroll after animation completes
+            }
+        });
+    </script>
 </body>
 </html>
