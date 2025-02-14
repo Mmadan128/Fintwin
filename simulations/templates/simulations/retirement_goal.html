@@ -1,133 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Retirement Goal Form</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
+    <!-- Reference Static CSS -->
+    <link rel="stylesheet" href="{% static 'simulations/css/retire.css' %}" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="main">
+      <!-- Reference Static Image -->
+      <img src="{% static 'simulations/images/retire bac.avif' %}" alt="" class="ret" />
+      
+      <div class="nav">
+        <div class="head">
+          <!-- Reference Static Image -->
+          <img src="{% static 'simulations/images/pixsdd-removebg-preview.png' %}" />
+          <h1>Finance Twin</h1>
+        </div>
+        <div class="menu">
+          <a href="#pg1">Home</a>
+          <a href="#pg3">Features</a>
+          <a href="#pg2">About</a>
+          <a href="#pg5">Contact</a>
+        </div>
+      </div>
 
-        .container {
-            width: 80%;
-            max-width: 700px;
-            margin: 50px auto;
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-        }
+      <h2 class="head">Retirement Goal Form</h2>
 
-        h2 {
-            text-align: center;
-            color: #2a9d8f;
-            margin-bottom: 30px;
-        }
+      <!-- Marquee Effect -->
+      <div class="marque">
+        <h2>Set Your Retirement Goal.&nbsp;</h2>
+        <h2>Set Your Retirement Goal.&nbsp;</h2>
+        <h2>Set Your Retirement Goal.&nbsp;</h2>
+        <h2>Set Your Retirement Goal.&nbsp;</h2>
+      </div>
 
-        form {
-            margin-bottom: 30px;
-        }
+      <form method="POST" class="form1">
+        <div class="cont">
+          <h3>Target Age:</h3>
+          <input type="number" placeholder="Your Target Age" required />
+          <h3>Current Age:</h3>
+          <input type="number" placeholder="Your Current Age" required />
+          <h3>Monthly Contribution (in INR):</h3>
+          <input type="number" placeholder="Your Contribution" required />
+          <h3>Expected Rate of Return(%):</h3>
+          <input type="text" placeholder="Expected Return" required />
+          <h3>Expected Monthly Retirement Expenses (in INR):</h3>
+          <input type="text" placeholder="Retirement Expenses" required />
+          <h3>Inflation Rate:</h3>
+          <input type="number" placeholder="Rate" required />
+          
+          <!-- Submit Button -->
+          <div class="btn">
+            <button type="submit">Calculate</button>
+          </div>
+        </div>
+      </form>
 
-        label {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            display: inline-block;
-        }
-
-        input[type="number"], input[type="text"], select {
-            width: 100%;
-            padding: 8px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        button {
-            background-color: #2a9d8f;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-            display: block;
-            margin: 0 auto;
-        }
-
-        button:hover {
-            background-color: #21867a;
-        }
-
-        .results, .chart, .ai-advice {
-            margin-top: 30px;
-            background-color: #f1f1f1;
-            padding: 20px;
-            border-radius: 5px;
-        }
-
-        .results p, .chart p, .ai-advice p {
-            font-size: 16px;
-        }
-
-        .chart img {
-            display: block;
-            margin: 0 auto;
-            max-width: 100%;
-        }
-
-        .ai-advice {
-            background-color: #e1f5e1;
-        }
-
-        .ai-advice h3 {
-            color: #2a9d8f;
-        }
-
-        .ai-advice p {
-            font-size: 14px;
-            color: #333;
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <h2>Retirement Goal Form</h2>
-    
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Calculate</button>
-    </form>
-
-    {% if chart_url %}
+      {% if chart_url %}
         <div class="chart">
-            <h3>Retirement Savings Over Time</h3>
-            <img src="data:image/png;base64,{{ chart_url }}" alt="Retirement Goal Chart">
+          <h3 class="head2">Retirement Savings Over Time</h3>
+          <img
+            src="data:image/png;base64,{{ chart_url }}"
+            alt="Retirement Goal Chart"
+          />
         </div>
-    {% endif %}
+      {% endif %}
 
-    {% if future_value %}
+      {% if future_value %}
         <div class="results">
-            <h3>Results</h3>
-            <p><strong>Future Value of Retirement Fund:</strong> ₹{{ future_value|floatformat:2 }}</p>
-            <p><strong>Projected Retirement Expenses:</strong> ₹{{ adjusted_expenses|floatformat:2 }}</p>
+          <h3>Results</h3>
+          <p><strong>Future Value of Retirement Fund:</strong> ₹{{ future_value|floatformat:2 }}</p>
+          <p><strong>Projected Retirement Expenses:</strong> ₹{{ adjusted_expenses|floatformat:2 }}</p>
         </div>
-    {% endif %}
+      {% endif %}
 
-    {% if ai_advice %}
+      {% if ai_advice %}
         <div class="ai-advice">
-            <h3>Your Personalized Financial Advice:</h3>
-            <p>{{ ai_advice }}</p>
+          <h3>Your Personalized Financial Advice:</h3>
+          <div class="suggestions">{{ ai_advice }}</div>
         </div>
-    {% endif %}
-</div>
+      {% endif %}
 
-</body>
+      <h3 class="footer">&copy;All Rights Reserved by Financial Twin</h3>
+    </div>
+
+    <!-- Reference Static JS -->
+    <script src="{% static 'simulations/js/retire.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+      integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </body>
 </html>
