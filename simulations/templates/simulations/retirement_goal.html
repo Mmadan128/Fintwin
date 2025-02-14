@@ -1,124 +1,114 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Retirement Goal Form</title>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'simulations/css/retire.css' %}"/>
-    <link href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static 'simulations/css/retire.css' %}" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="main">
+      <!-- Background Image -->
+      <img src="{% static 'simulations/images/retire_bac.avif' %}" alt="Retirement Background" class="ret" />
 
-</head>
-<body>
-    <div class="main" data-scroll-container>
-        <!-- Background Image -->
-        <img src="{% static 'simulations/images/retire_bac.jpg' %}" alt="Retirement Background" class="ret"/>
-
-        <!-- Navigation Bar -->
-        <div class="nav" data-scroll>
-            <div class="head">
-                <img src="{% static 'simulations/images/pixsdd-removebg-preview.png' %}" alt="Logo"/>
-                <h1>Finance Twin</h1>
-            </div>
-            <div class="menu">
-                <a href="#pg1">Home</a>
-                <a href="#pg3">Features</a>
-                <a href="#pg2">About</a>
-                <a href="#pg5">Contact</a>
-            </div>
+      <div class="nav">
+        <div class="head">
+          <img src="{% static 'simulations/images/pixsdd-removebg-preview.png' %}" alt="Finance Twin Logo"/>
+          <h1>Finance Twin</h1>
         </div>
-
-        <h2 class="head" data-scroll>Retirement Goal Form</h2>
-
-        <!-- Marquee Effect -->
-        <div class="marque" data-scroll>
-            <h2>Set Your Retirement Goal.&nbsp;</h2>
-            <h2>Set Your Retirement Goal.&nbsp;</h2>
-            <h2>Set Your Retirement Goal.&nbsp;</h2>
-            <h2>Set Your Retirement Goal.&nbsp;</h2>
+        <div class="menu">
+          <a href="#pg1">Home</a>
+          <a href="#pg3">Features</a>
+          <a href="#pg2">About</a>
+          <a href="#pg5">Contact</a>
         </div>
+      </div>
 
-        <!-- Retirement Form -->
-        <form method="POST" class="form1">
-            {% csrf_token %}
-            <div class="cont">
-                <h3>Target Age:</h3>
-                <input type="number" name="target_age" placeholder="Your Target Age" required/>
+      <h2 class="head">Retirement Goal Form</h2>
 
-                <h3>Current Age:</h3>
-                <input type="number" name="current_age" placeholder="Your Current Age" required/>
+      <!-- Marquee Effect -->
+      <div class="marque">
+        <h2>Set Your Retirement Goal.&nbsp;</h2>
+        <h2>Set Your Retirement Goal.&nbsp;</h2>
+        <h2>Set Your Retirement Goal.&nbsp;</h2>
+        <h2>Set Your Retirement Goal.&nbsp;</h2>
+      </div>
 
-                <h3>Monthly Contribution (in INR):</h3>
-                <input type="number" name="monthly_contribution" placeholder="Your Contribution" required/>
+      <form method="POST" class="form1">
+        {% csrf_token %}
+        <div class="cont">
+          <h3>Target Age:</h3>
+          <input type="number" placeholder="Your Target Age" required />
+          
+          <h3>Current Age:</h3>
+          <input type="number" placeholder="Your Current Age" required />
+          
+          <h3>Monthly Contribution (in INR):</h3>
+          <input type="number" placeholder="Your Contribution" required />
+          
+          <h3>Expected Rate of Return(%):</h3>
+          <input type="text" placeholder="Expected Return" required />
+          
+          <h3>Expected Monthly Retirement Expenses (in INR):</h3>
+          <input type="text" placeholder="Retirement Expenses" required />
+          
+          <h3>Inflation Rate</h3>
+          <input type="number" placeholder="Rate" required />
 
-                <h3>Expected Rate of Return (%):</h3>
-                <input type="text" name="expected_return" placeholder="Expected Return" required/>
+          <div class="btn">
+            <button type="submit">Calculate</button>
+          </div>
 
-                <h3>Expected Monthly Retirement Expenses (in INR):</h3>
-                <input type="text" name="retirement_expenses" placeholder="Retirement Expenses" required/>
+          <!-- Display Chart if Available -->
+          {% if chart_url %}
+          <div class="chart">
+            <h3 class="head2">Retirement Savings Over Time</h3>
+            <img src="data:image/png;base64,{{ chart_url }}" alt="Retirement Goal Chart"/>
+          </div>
+          {% endif %}
 
-                <h3>Inflation Rate (%):</h3>
-                <input type="number" name="inflation_rate" placeholder="Rate" required/>
+          <!-- Display Results if Available -->
+          {% if future_value %}
+          <div class="results">
+            <h3>Results</h3>
+            <p>
+              <strong>Future Value of Retirement Fund:</strong> ₹{{ future_value|floatformat:2 }}
+            </p>
+            <p>
+              <strong>Projected Retirement Expenses:</strong> ₹{{ adjusted_expenses|floatformat:2 }}
+            </p>
+          </div>
+          {% endif %}
 
-                <div class="btn">
-                    <button type="submit">Calculate</button>
-                </div>
+          <!-- Display AI-Based Financial Advice if Available -->
+          {% if ai_advice %}
+          <div class="ai-advice">
+            <h3>Your Personalized Financial Advice:</h3>
+            <div class="suggestions">{{ ai_advice }}</div>
+          </div>
+          {% endif %}
+        </div>
+      </form>
 
-                <!-- Display Chart if Available -->
-                {% if chart_url %}
-                <div class="chart" data-scroll>
-                    <h3 class="head2">Retirement Savings Over Time</h3>
-                    <img src="data:image/png;base64,{{ chart_url }}" alt="Retirement Goal Chart"/>
-                </div>
-                {% endif %}
-
-                <!-- Display Results if Available -->
-                {% if future_value %}
-                <div class="results" data-scroll>
-                    <h3>Results</h3>
-                    <p><strong>Future Value of Retirement Fund:</strong> ₹{{ future_value|floatformat:2 }}</p>
-                    <p><strong>Projected Retirement Expenses:</strong> ₹{{ adjusted_expenses|floatformat:2 }}</p>
-                </div>
-                {% endif %}
-
-                <!-- Display AI-Based Financial Advice if Available -->
-                {% if ai_advice %}
-                <div class="ai-advice" data-scroll>
-                    <h3>Your Personalized Financial Advice:</h3>
-                    <div class="suggestions">{{ ai_advice }}</div>
-                </div>
-                {% endif %}
-            </div>
-        </form>
-
-        <h3 class="footer" data-scroll>&copy; All Rights Reserved by Finance Twin</h3>
+      <h3 class="footer">&copy; All Rights Reserved by Finance Twin</h3>
     </div>
 
     <!-- JS Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
-            integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+      integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <script src="{% static 'simulations/js/retire.js' %}"></script>
-
-    <script>
-        // Initialize Locomotive Scroll
-        const scroll = new LocomotiveScroll({
-            el: document.querySelector('.main'),
-            smooth: true
-        });
-
-        // GSAP animation for the '.main' element
-        gsap.from(".main", {
-            y: 1000,
-            opacity: 0,
-            duration: 1.2,
-            onComplete: () => {
-                scroll.update(); // Update Locomotive Scroll after animation completes
-            }
-        });
-    </script>
-</body>
+  </body>
 </html>
