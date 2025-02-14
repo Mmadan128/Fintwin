@@ -28,3 +28,8 @@ def tax_calculation(income):
         tax_rebate = 0
 
     return tax
+
+from .models import Expense
+
+# Remove all records from YourModel table
+Expense.objects.all().delete()
