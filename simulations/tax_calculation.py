@@ -29,7 +29,3 @@ def tax_calculation(income):
 
     return tax
 
-from .models import Expense
-
-# Remove all records from YourModel table
-Expense.objects.all().delete()
