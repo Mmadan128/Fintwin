@@ -1,9 +1,11 @@
+/* Resetting margin, padding, and ensuring box-sizing */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-html, body{
+
+html, body {
     width: 100%;
     height: 100%;
     font-family: sans-serif;
@@ -11,12 +13,16 @@ html, body{
     background-color: black;
     z-index: -88;
 }
-.main{
+
+/* Main Container */
+.main {
     width: 100%;
     position: relative;
     color: white;
 }
-.vid{
+
+/* Video Background */
+.vid {
     object-fit: cover;
     width: 100%;
     height: 200vw;
@@ -24,6 +30,8 @@ html, body{
     position: absolute;
     z-index: -1;
 }
+
+/* Navigation */
 .nav {
     display: flex;
     align-items: center;
@@ -35,30 +43,39 @@ html, body{
     backdrop-filter: blur(10px);
     z-index: 999 !important;
 }
-.nav h1{
+
+/* Header inside Navigation */
+.nav h1 {
     font-size: 2vw;
     text-transform: uppercase;
 }
-.head{
+
+.head {
     display: flex;
     align-items: center;
     gap: 2vw;
 }
-.head img{
+
+.head img {
     width: 6vw;
     height: 6vw;
 }
-.nav a{
+
+.nav a {
     text-decoration: none;
     color: white;
     font-size: 1.3vw;
     text-transform: uppercase;
 }
-.menu{
+
+/* Menu */
+.menu {
     display: flex;
     gap: 3vw;
 }
-.head{
+
+/* Page Header */
+.head {
     font-size: 5.5vw;
     text-transform: uppercase;
     display: flex;
@@ -66,17 +83,22 @@ html, body{
     margin-top: 1vw;
     font-weight: 600;
 }
-.form1{
+
+/* Form Styling */
+.form1 {
     padding: 3vw 2vw;
 }
-.cont{
-    background-color: rgba(0,0,0,0.8);
+
+.cont {
+    background-color: rgba(0, 0, 0, 0.8);
     text-align: center;
     border-radius: 50px;
     box-shadow: 0 0 20px 1px white;
     padding: 1vw 0;
 }
-.footer{
+
+/* Footer Styling */
+.footer {
     display: flex;
     align-items: center;
     padding: 2vw;
@@ -85,12 +107,15 @@ html, body{
     justify-content: center;
     margin-top: 2vw;
 }
-.marque{
+
+/* Marquee Effect */
+.marque {
     display: flex;
     white-space: nowrap;
     margin: 3vw 0;
 }
-.marque h2{
+
+.marque h2 {
     font-size: 2vw;
     text-transform: uppercase;
     color: transparent;
@@ -99,19 +124,21 @@ html, body{
     animation: anime 10s infinite linear;
     font-size: 3.5vw;
 }
+
 @keyframes anime {
-    0%{
+    0% {
         transform: translateX(0%);
     }
-    100%{
+    100% {
         transform: translateX(-100%);
     }
 }
-button{
+
+/* Button Styling */
+button {
     background-color: rgb(246, 173, 47);
     color: black;
     margin: 2vw 0;
-    
     border: none;
     border-radius: 30px;
     height: 5vw;
@@ -121,31 +148,42 @@ button{
     text-transform: uppercase;
     transition: all ease-in-out 0.2s;
 }
-.container{
+
+button:hover {
+    background-color: #f8b847;
+}
+
+/* Container */
+.container {
     padding: 0vw 3vw;
 }
-.subcont{
-    background-color: rgba(0,0,0,0.7);
+
+/* Subcontainer Styling */
+.subcont {
+    background-color: rgba(0, 0, 0, 0.7);
     padding: 1vw 3vw;
     border-radius: 30px;
     box-shadow: 0 0 5px 1px white;
-
 }
-.subcont h2{
+
+.subcont h2 {
     font-weight: 200;
     font-size: 2.5vw;
     text-transform: uppercase;
     margin: 4vw;
     text-align: center;
 }
-.subcont h3{
+
+.subcont h3 {
     font-size: 1.7vw;
     text-align: center;
     margin-bottom: 2vw;
     text-transform: uppercase;
     font-weight: 200;
 }
-.subcont input{
+
+/* Input Field Styling */
+.subcont input {
     border-radius: 30px;
     height: 3.5vw;
     width: 25vw;
@@ -154,8 +192,41 @@ button{
     font-weight: 200;
     margin-bottom: 3vw;
 }
+
+/* Form Layout */
 form {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+/* Expense Table */
+.expense-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.expense-table th,
+.expense-table td {
+    padding: 1.5vw;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.expense-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.expense-table td {
+    font-size: 1.7vw;
+}
+
+/* Total Expenses Section */
+.total-expenses {
+    text-align: right;
+    font-size: 2vw;
+    margin-top: 20px;
+    font-weight: bold;
 }
