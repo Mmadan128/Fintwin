@@ -62,6 +62,32 @@
 
           <!-- Total Expenses Section -->
           <h3 class="total-expenses">Total Expenses: ₹{{ total_expenses }}</h3>
+
+          <!-- Expense Table -->
+          <table class="expense-table">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Amount (₹)</th>
+                <th>Date</th>
+                <th>Category</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for expense in expenses %}
+                <tr>
+                  <td>{{ expense.description }}</td>
+                  <td>₹{{ expense.amount|floatformat:2 }}</td>
+                  <td>{{ expense.date }}</td>
+                  <td>{{ expense.category }}</td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="4">No expenses found.</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
       </div>
 
