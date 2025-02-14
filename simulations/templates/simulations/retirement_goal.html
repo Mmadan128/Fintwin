@@ -66,37 +66,37 @@
           <div class="btn">
             <button type="submit">Calculate</button>
           </div>
-
-          <!-- Display Chart if Available -->
-          {% if chart_url %}
-          <div class="chart">
-            <h3 class="head2">Retirement Savings Over Time</h3>
-            <img src="data:image/png;base64,{{ chart_url }}" alt="Retirement Goal Chart"/>
-          </div>
-          {% endif %}
-
-          <!-- Display Results if Available -->
-          {% if future_value %}
-          <div class="results">
-            <h3>Results</h3>
-            <p>
-              <strong>Future Value of Retirement Fund:</strong> ₹{{ future_value|floatformat:2 }}
-            </p>
-            <p>
-              <strong>Projected Retirement Expenses:</strong> ₹{{ adjusted_expenses|floatformat:2 }}
-            </p>
-          </div>
-          {% endif %}
-
-          <!-- Display AI-Based Financial Advice if Available -->
-          {% if ai_advice %}
-          <div class="ai-advice">
-            <h3>Your Personalized Financial Advice:</h3>
-            <div class="suggestions">{{ ai_advice }}</div>
-          </div>
-          {% endif %}
         </div>
       </form>
+
+      <!-- Display Chart if Available -->
+      {% if chart_url %}
+      <div class="chart">
+        <h3 class="head2">Retirement Savings Over Time</h3>
+        <img src="data:image/png;base64,{{ chart_url }}" alt="Retirement Goal Chart"/>
+      </div>
+      {% endif %}
+
+      <!-- Display Results if Available -->
+      {% if future_value %}
+      <div class="results">
+        <h3>Results</h3>
+        <p>
+          <strong>Future Value of Retirement Fund:</strong> ₹{{ future_value|floatformat:2 }}
+        </p>
+        <p>
+          <strong>Projected Retirement Expenses:</strong> ₹{{ adjusted_expenses|floatformat:2 }}
+        </p>
+      </div>
+      {% endif %}
+
+      <!-- Display AI-Based Financial Advice if Available -->
+      {% if ai_advice %}
+      <div class="ai-advice">
+        <h3>Your Personalized Financial Advice:</h3>
+        <div class="suggestions">{{ ai_advice }}</div>
+      </div>
+      {% endif %}
 
       <h3 class="footer">&copy; All Rights Reserved by Finance Twin</h3>
     </div>
