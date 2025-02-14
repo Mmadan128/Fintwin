@@ -6,7 +6,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Retirement Goal Form</title>
-    
     <!-- Reference Static CSS -->
     <link rel="stylesheet" href="{% static 'simulations/css/retire.css' %}" />
     <link
@@ -17,12 +16,12 @@
   <body>
     <div class="main">
       <!-- Reference Static Image -->
-      <img src="{% static 'simulations/images/retire bac.avif' %}" alt="Retirement Background" class="ret" />
+      <img src="{% static 'simulations/images/retire bac.avif' %}" alt="" class="ret" />
       
       <div class="nav">
         <div class="head">
           <!-- Reference Static Image -->
-          <img src="{% static 'simulations/images/pixsdd-removebg-preview.png' %}" alt="Finance Twin Logo" />
+          <img src="{% static 'simulations/images/pixsdd-removebg-preview.png' %}" />
           <h1>Finance Twin</h1>
         </div>
         <div class="menu">
@@ -52,10 +51,10 @@
           <input type="number" name="current_age" placeholder="Your Current Age" required />
           <h3>Monthly Contribution (in INR):</h3>
           <input type="number" name="monthly_contribution" placeholder="Your Contribution" required />
-          <h3>Expected Rate of Return (%):</h3>
-          <input type="text" name="rate_of_return" placeholder="Expected Return" required />
+          <h3>Expected Rate of Return(%):</h3>
+          <input type="text" name="expected_rate_of_return" placeholder="Expected Return" required />
           <h3>Expected Monthly Retirement Expenses (in INR):</h3>
-          <input type="text" name="monthly_expenses" placeholder="Retirement Expenses" required />
+          <input type="text" name="retirement_expenses" placeholder="Retirement Expenses" required />
           <h3>Inflation Rate:</h3>
           <input type="number" name="inflation_rate" placeholder="Rate" required />
           
@@ -91,7 +90,7 @@
         </div>
       {% endif %}
 
-      <h3 class="footer">&copy; All Rights Reserved by Financial Twin</h3>
+      <h3 class="footer">&copy;All Rights Reserved by Financial Twin</h3>
     </div>
 
     <!-- Reference Static JS -->
