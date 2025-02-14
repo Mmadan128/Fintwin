@@ -43,26 +43,26 @@
       </div>
 
       <form method="POST" class="form1">
+        {% csrf_token %}
         <div class="cont">
-          <h3>Target Age:</h3>
-          <input type="number" placeholder="Your Target Age" required />
-          <h3>Current Age:</h3>
-          <input type="number" placeholder="Your Current Age" required />
-          <h3>Monthly Contribution (in INR):</h3>
-          <input type="number" placeholder="Your Contribution" required />
-          <h3>Expected Rate of Return(%):</h3>
-          <input type="text" placeholder="Expected Return" required />
-          <h3>Expected Monthly Retirement Expenses (in INR):</h3>
-          <input type="text" placeholder="Retirement Expenses" required />
-          <h3>Inflation Rate:</h3>
-          <input type="number" placeholder="Rate" required />
-          
-          <!-- Submit Button -->
-          <div class="btn">
-            <button type="submit">Calculate</button>
-          </div>
+            <h3>Target Age:</h3>
+            <input type="number" name="target_age" placeholder="Your Target Age" required />
+            <h3>Current Age:</h3>
+            <input type="number" name="current_age" placeholder="Your Current Age" required />
+            <h3>Monthly Contribution (in INR):</h3>
+            <input type="number" name="monthly_contribution" placeholder="Your Contribution" required />
+            <h3>Expected Rate of Return(%):</h3>
+            <input type="text" name="rate_of_return" placeholder="Expected Return" required />
+            <h3>Expected Monthly Retirement Expenses (in INR):</h3>
+            <input type="text" name="monthly_expenses" placeholder="Retirement Expenses" required />
+            <h3>Inflation Rate:</h3>
+            <input type="number" name="inflation_rate" placeholder="Rate" required />
+            
+            <div class="btn">
+                <button type="submit">Calculate</button>
+            </div>
         </div>
-      </form>
+    </form>
 
       {% if chart_url %}
         <div class="chart">
