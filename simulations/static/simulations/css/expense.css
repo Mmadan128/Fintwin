@@ -1,4 +1,4 @@
-/* Resetting margin, padding, and ensuring box-sizing */
+/* Universal Styling */
 * {
     margin: 0;
     padding: 0;
@@ -14,7 +14,6 @@ html, body {
     z-index: -88;
 }
 
-/* Main Container */
 .main {
     width: 100%;
     position: relative;
@@ -31,7 +30,7 @@ html, body {
     z-index: -1;
 }
 
-/* Navigation */
+/* Navigation Bar */
 .nav {
     display: flex;
     align-items: center;
@@ -44,7 +43,6 @@ html, body {
     z-index: 999 !important;
 }
 
-/* Header inside Navigation */
 .nav h1 {
     font-size: 2vw;
     text-transform: uppercase;
@@ -68,13 +66,12 @@ html, body {
     text-transform: uppercase;
 }
 
-/* Menu */
 .menu {
     display: flex;
     gap: 3vw;
 }
 
-/* Page Header */
+/* Header Section */
 .head {
     font-size: 5.5vw;
     text-transform: uppercase;
@@ -97,7 +94,7 @@ html, body {
     padding: 1vw 0;
 }
 
-/* Footer Styling */
+/* Footer */
 .footer {
     display: flex;
     align-items: center;
@@ -134,7 +131,7 @@ html, body {
     }
 }
 
-/* Button Styling */
+/* Button */
 button {
     background-color: rgb(246, 173, 47);
     color: black;
@@ -149,16 +146,11 @@ button {
     transition: all ease-in-out 0.2s;
 }
 
-button:hover {
-    background-color: #f8b847;
-}
-
-/* Container */
+/* Container and Form Elements */
 .container {
     padding: 0vw 3vw;
 }
 
-/* Subcontainer Styling */
 .subcont {
     background-color: rgba(0, 0, 0, 0.7);
     padding: 1vw 3vw;
@@ -182,7 +174,7 @@ button:hover {
     font-weight: 200;
 }
 
-/* Input Field Styling */
+/* Input Fields */
 .subcont input {
     border-radius: 30px;
     height: 3.5vw;
@@ -191,6 +183,19 @@ button:hover {
     padding: 0 1.5vw;
     font-weight: 200;
     margin-bottom: 3vw;
+    background-color: transparent;
+    color: white;
+    border: 1px solid #fff;
+}
+
+.subcont input:focus {
+    outline: none;
+    border: 1px solid rgb(246, 173, 47);
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.subcont input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
 }
 
 /* Form Layout */
@@ -198,35 +203,4 @@ form {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-/* Expense Table */
-.expense-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-.expense-table th,
-.expense-table td {
-    padding: 1.5vw;
-    text-align: center;
-    border: 1px solid #ddd;
-}
-
-.expense-table th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-}
-
-.expense-table td {
-    font-size: 1.7vw;
-}
-
-/* Total Expenses Section */
-.total-expenses {
-    text-align: right;
-    font-size: 2vw;
-    margin-top: 20px;
-    font-weight: bold;
 }
