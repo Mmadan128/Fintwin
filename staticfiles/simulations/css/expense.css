@@ -1,0 +1,232 @@
+/* Resetting margin, padding, and ensuring box-sizing */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    font-family: sans-serif;
+    overflow-x: hidden;
+    background-color: black;
+    z-index: -88;
+}
+
+/* Main Container */
+.main {
+    width: 100%;
+    position: relative;
+    color: white;
+}
+
+/* Video Background */
+.vid {
+    object-fit: cover;
+    width: 100%;
+    height: 200vw;
+    filter: brightness(20%);
+    position: absolute;
+    z-index: -1;
+}
+
+/* Navigation */
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0vw 2vw;
+    position: sticky;
+    top: 0%;
+    left: 0%;
+    backdrop-filter: blur(10px);
+    z-index: 999 !important;
+}
+
+/* Header inside Navigation */
+.nav h1 {
+    font-size: 2vw;
+    text-transform: uppercase;
+}
+
+.head {
+    display: flex;
+    align-items: center;
+    gap: 2vw;
+}
+
+.head img {
+    width: 6vw;
+    height: 6vw;
+}
+
+.nav a {
+    text-decoration: none;
+    color: white;
+    font-size: 1.3vw;
+    text-transform: uppercase;
+}
+
+/* Menu */
+.menu {
+    display: flex;
+    gap: 3vw;
+}
+
+/* Page Header */
+.head {
+    font-size: 5.5vw;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    margin-top: 1vw;
+    font-weight: 600;
+}
+
+/* Form Styling */
+.form1 {
+    padding: 3vw 2vw;
+}
+
+.cont {
+    background-color: rgba(0, 0, 0, 0.8);
+    text-align: center;
+    border-radius: 50px;
+    box-shadow: 0 0 20px 1px white;
+    padding: 1vw 0;
+}
+
+/* Footer Styling */
+.footer {
+    display: flex;
+    align-items: center;
+    padding: 2vw;
+    color: white;
+    font-size: 1.2vw;
+    justify-content: center;
+    margin-top: 2vw;
+}
+
+/* Marquee Effect */
+.marque {
+    display: flex;
+    white-space: nowrap;
+    margin: 3vw 0;
+}
+
+.marque h2 {
+    font-size: 2vw;
+    text-transform: uppercase;
+    color: transparent;
+    -webkit-text-stroke: 0.5px white;
+    font-style: italic;
+    animation: anime 10s infinite linear;
+    font-size: 3.5vw;
+}
+
+@keyframes anime {
+    0% {
+        transform: translateX(0%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/* Button Styling */
+button {
+    background-color: rgb(246, 173, 47);
+    color: black;
+    margin: 2vw 0;
+    border: none;
+    border-radius: 30px;
+    height: 5vw;
+    width: 20vw;
+    font-size: 1.7vw;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all ease-in-out 0.2s;
+}
+
+button:hover {
+    background-color: #f8b847;
+}
+
+/* Container */
+.container {
+    padding: 0vw 3vw;
+}
+
+/* Subcontainer Styling */
+.subcont {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 1vw 3vw;
+    border-radius: 30px;
+    box-shadow: 0 0 5px 1px white;
+}
+
+.subcont h2 {
+    font-weight: 200;
+    font-size: 2.5vw;
+    text-transform: uppercase;
+    margin: 4vw;
+    text-align: center;
+}
+
+.subcont h3 {
+    font-size: 1.7vw;
+    text-align: center;
+    margin-bottom: 2vw;
+    text-transform: uppercase;
+    font-weight: 200;
+}
+
+/* Input Field Styling */
+.subcont input {
+    border-radius: 30px;
+    height: 3.5vw;
+    width: 25vw;
+    font-size: 1.5vw;
+    padding: 0 1.5vw;
+    font-weight: 200;
+    margin-bottom: 3vw;
+}
+
+/* Form Layout */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Expense Table */
+.expense-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.expense-table th,
+.expense-table td {
+    padding: 1.5vw;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.expense-table th {
+    background-color: #000000;
+    font-weight: bold;
+}
+
+.expense-table td {
+    font-size: 1.7vw;
+}
+
+/* Total Expenses Section */
+.total-expenses {
+    text-align: right;
+    font-size: 2vw;
+    margin-top: 20px;
+    font-weight: bold;
+}
